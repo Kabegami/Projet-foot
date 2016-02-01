@@ -9,7 +9,6 @@ def deplace_point(p1,p2):
     #prend 2 joueurs et retourne un Vector2D
     return  Vector2D(p2.x - p1.x, p2.y - p1.y)
 
-
 def shoot_but(player,teamid,state):
     #Retourne un Vector2D correspondant au vecteur poitant sur les but
     if(teamid == 1):
@@ -53,3 +52,4 @@ def mes_but(player,teamid,state):
         return Vector2D(settings.GAME_WIDTH,settings.GAME_HEIGHT/2.0)
     else:
        return Vector2D(0,settings.GAME_HEIGHT/2.0)
+
