@@ -71,17 +71,19 @@ class PlayerDecorator(object):
 
     @property
     def my_but(self):
-        if(self.key[0] == 1):
-            return(self.but2)
+        mes_but = Vector2D(0,settings.GAME_HEIGHT/2)
+        if (self.key[0] == 1):
+            return mes_but
         else:
-            return(self.but1)
+            return(terrain.mirroir(mes_but))
 
     @property
     def adv_but(self):
-        if(self.key[0] == 1):
-            return(self.but1)
+        V = Vector2D(settings.GAME_WIDTH,settings.GAME_HEIGHT/2)
+        if (self.key[0] == 1):
+            return V
         else:
-            return(self.but2)
+            return terrain.mirroir(V)
         
     #fonction de deplacement
     def go(self,p):
@@ -102,6 +104,9 @@ class PlayerDecorator(object):
     def shoot_but(self):
         return SoccerAction(Vector2D(0,0),self.adv_but - self.my_position)
 
+    @property
+    def passe(self):
+        return self.shoot(self.equ_proche)
     #trigger
 
     @property
@@ -110,6 +115,13 @@ class PlayerDecorator(object):
             return True
         else:
             return False
+
+    @property
+    def gere_shoot(self):
+        if (self.can_shoot):
+            return self.shoot_but
+        else:
+            return SoccerAction(Vector2D(0,0))
 
     #constantes de zones
     @property
@@ -129,7 +141,7 @@ class PlayerDecorator(object):
     
     #fonction bas niveau
     def dans_zone(self,zone,position):
-        return est_dans(zone,position)
+        return zone.est_dans(position)
 
     #fonction moyen_niveau
 
@@ -148,6 +160,13 @@ class PlayerDecorator(object):
                 return True
             return False
 
+    def balle_dans_zone(self,zone):
+        return self.dans_zone(zone,self.ball_position)
+
+    @property
+    def ball_in_my_zone(self):
+        return self.balle_dans_zone(self.my_zone)
+
     @property
     def adv_in_my_zone(self):
         return self.adv_dans_zone(self.my_zone)
@@ -158,3 +177,4 @@ class PlayerDecorator(object):
     
 
     
+#Gestion du terrain
