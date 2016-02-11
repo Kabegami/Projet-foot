@@ -107,6 +107,8 @@ class PlayerDecorator(object):
     @property
     def passe(self):
         return self.shoot(self.equ_proche)
+    
+            
     #trigger
 
     @property
@@ -126,10 +128,13 @@ class PlayerDecorator(object):
     #constantes de zones
     @property
     def my_zone(self):
+        bg = Vector2D(0,0)
+        hd = Vector2D(settings.GAME_WIDTH/2,settings.GAME_HEIGHT)
+        z = zone(bg,hd)
         if (self.key[0] == 1):
-            return zone(Vector2D(0,0),Vector2D(settings.GAME_WIDTH/2,settings.GAME_HEIGHT))
+            return z
         else:
-            return zone(Vector2D(settings.GAME_WIDTH/2,0),Vector2D(settings.GAME_WIDTH, settings.GAME_HEIGHT))
+            return z.zone_mirroir
 
     @property
     def adv_zone(self):

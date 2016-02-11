@@ -85,6 +85,14 @@ class ZoneStrategy(BaseStrategy):
         else:
             return V
 
+class TestStrategy(BaseStrategy):
+    def __init__(self):
+        BaseStrategy.__init__(self,"TestStrategy")
+    def compute_strategy(self, state, teamid,player):
+        etat = PlayerDecorator(state,teamid,player)
+        zone = etat.my_zone
+        return  etat.go(zone.alea())
+
 
 Defens = StratStateless(defenseur)
 
@@ -93,6 +101,7 @@ joueur2 = Player("Joueur 2", GardienStrategy())
 joueur3 = Player("Joueur 3", PasseurStrategy())
 joueur4 = Player("Joueur 4", DefenseurStrategy())
 joueur5 = Player("Joueur 5", ZoneStrategy())
+joueur6 = Player("Joueur 6",TestStrategy())
 
 #team1 = SoccerTeam("team1",[joueur1])
 #team2 = SoccerTeam("team2",[joueur5])

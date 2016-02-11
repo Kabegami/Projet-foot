@@ -3,6 +3,7 @@ from soccersimulator import BaseStrategy, SoccerAction
 from soccersimulator import SoccerTeam, SoccerMatch
 from soccersimulator import Vector2D, Player, SoccerTournament
 from soccersimulator import settings
+from random import *
 
 class zone(object):
     def __init__(self,bg,hd):
@@ -28,11 +29,28 @@ class zone(object):
             return False
         return True
 
+    #important
     def mirroir(self,Vecteur):
         V = self.normalisation(Vecteur)
         V.x = -(V.x)
         V = self.denormalisation(Vecteur)
         return V
+
+    @property
+    def zone_mirroir(self):
+        c1 = Vector2D(0,-1)
+        c2 = Vector2D(1,1)
+        c1 = self.denormalisation(c1)
+        c2 = self.denormalisation(c2)
+        return zone(c1,c2)
+
+    def milieu(self):
+        return self.denormalisation(Vector2D(0,0))
+
+    def alea(self):
+        x = random()*2 - 1
+        y = random()*2 - 1
+        return self.denormalisation(Vector2D(x,y))
 
     
 
