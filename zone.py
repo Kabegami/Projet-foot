@@ -29,6 +29,13 @@ class zone(object):
             return False
         return True
 
+    def vecteur_dans_zone(self,v):
+        if(v.x > self.bg.x and v.x < self.hd.x and v.y > self.bg.y and v.y < self.hd.y):
+            return True
+        else:
+            return False
+    
+
     #important
     def mirroir(self,Vecteur):
         V = self.normalisation(Vecteur)
@@ -65,7 +72,7 @@ class zone(object):
     @property
     def division_horizontale(self):
         #zone haut
-        c1 = Vector2D(0,-1)
+        c1 = Vector2D(-1,-0)
         c2 = Vector2D(1,1)
         c1 = self.denormalisation(c1)
         c2 = self.denormalisation(c2)
@@ -98,4 +105,9 @@ class zone(object):
 
 terrain = zone(Vector2D(0,0),Vector2D(settings.GAME_WIDTH, settings.GAME_HEIGHT))
 z = terrain.division_verticale
+gauche = z[0]
+droite = z[1]
+bg_milieu = terrain.denormalisation(Vector2D(-0.5,-1))
+hd_milieu = terrain.denormalisation(Vector2D(0.5,1))
+m = zone(bg_milieu,hd_milieu)
 

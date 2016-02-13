@@ -33,6 +33,14 @@ class PlayerDecorator(object):
     @property
     def distance_ball(self):
         return (self.my_position.distance(self.ball_position))
+
+    @property
+    def distance_but_adv(self):
+        return self.my_position.distance(self.adv_but)
+
+    @property
+    def distance_my_but(self):
+        return self.my_position.distance(self.my_but)
     
     @property
     def adv_proche(self):
@@ -106,8 +114,7 @@ class PlayerDecorator(object):
         return self.shoot(self.adv_but)
 
     @property
-    def passe(self):
-        
+    def passe(self): 
         return self.shoot(self.equ_proche)
     
 
@@ -128,24 +135,22 @@ class PlayerDecorator(object):
         else:
             return SoccerAction(Vector2D(0,0))
 
-    @property
-    def degage(self):
+        
+    def degage(self,zone):
         if (self.key[0] == 0):
-            z = self.my_zone.division_verticale[1]
-            if not(self.adv_dans_zone(z.division_horizontale[0])):
-                return self.shoot(z.division_horizontale[0].milieu)
+            if not(self.adv_dans_zone(zone.division_horizontale[0])):
+                return self.shoot(zone.division_horizontale[0].milieu)
             else:
-                if not(self.adv_dans_zone(z.division_horizontale[1])):
-                    return self.shoot(z.division_horizontale[1].milieu)
+                if not(self.adv_dans_zone(zone.division_horizontale[1])):
+                    return self.shoot(zone.division_horizontale[1].milieu)
                 else:
                     return self.passe
         else:
-            z = self.my_zone.division_verticale[0]
-            if not(self.adv_dans_zone(z.division_horizontale[0])):
-                return self.shoot(z.division_horizontale[0].milieu)
+            if not(self.adv_dans_zone(zone.division_horizontale[0])):
+                return self.shoot(zone.division_horizontale[0].milieu)
             else:
-                if not(self.adv_dans_zone(z.division_horizontale[1])):
-                    return self.shoot(z.division_horizontale[1].milieu)
+                if not(self.adv_dans_zone(zone.division_horizontale[1])):
+                    return self.shoot(zone.division_horizontale[1].milieu)
                 else:
                     return self.passe
 
@@ -179,7 +184,8 @@ class PlayerDecorator(object):
     
     #fonction bas niveau
     def dans_zone(self,zone,position):
-        return zone.est_dans(position)
+        return zone.vecteur_dans_zone(position)
+        #return zone.est_dans(position)
 
     #fonction moyen_niveau
 
