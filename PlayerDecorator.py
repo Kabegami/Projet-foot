@@ -46,6 +46,7 @@ class PlayerDecorator(object):
     @property
     def equ_proche(self):
         distance = 10000
+        a = terrain.milieu
         for i in self.equipe:
             if self.my_position.distance(i.position) < distance:
                 distance = self.my_position.distance(i.position)
@@ -99,16 +100,17 @@ class PlayerDecorator(object):
             return SoccerAction(Vector2D(0,0), p - self.my_position)
         else:
             return SoccerAction(Vector2D(0,0),Vector2D(0,0))
-
+        
     @property
     def shoot_but(self):
-        return SoccerAction(Vector2D(0,0),self.adv_but - self.my_position)
+        return self.shoot(self.adv_but)
 
     @property
     def passe(self):
+        
         return self.shoot(self.equ_proche)
     
-            
+
     #trigger
 
     @property
@@ -118,6 +120,7 @@ class PlayerDecorator(object):
         else:
             return False
 
+    #a supprimer
     @property
     def gere_shoot(self):
         if (self.can_shoot):
@@ -125,23 +128,53 @@ class PlayerDecorator(object):
         else:
             return SoccerAction(Vector2D(0,0))
 
+    @property
+    def degage(self):
+        if (self.key[0] == 0):
+            z = self.my_zone.division_verticale[1]
+            if not(self.adv_dans_zone(z.division_horizontale[0])):
+                return self.shoot(z.division_horizontale[0].milieu)
+            else:
+                if not(self.adv_dans_zone(z.division_horizontale[1])):
+                    return self.shoot(z.division_horizontale[1].milieu)
+                else:
+                    return self.passe
+        else:
+            z = self.my_zone.division_verticale[0]
+            if not(self.adv_dans_zone(z.division_horizontale[0])):
+                return self.shoot(z.division_horizontale[0].milieu)
+            else:
+                if not(self.adv_dans_zone(z.division_horizontale[1])):
+                    return self.shoot(z.division_horizontale[1].milieu)
+                else:
+                    return self.passe
+
+                
+    #def degage2(self):
+        #z = self.my_zone.division_verticale[1]
+        #d = (z.division_horizontale[0]).distance(etat.adv_proche)
+        #if z.division_horizontale[1].distance(etat.adv_proche) > d:
+            #return self.shoot(z.division_horizontale[1].milieu)
+       # return self.shoot(z.division_horizontale[0].milieu)
+            
+   # @property
+    #def degagement(self,zone):
+        #return self.tire(self.rechercher_zone_libre(zone).milieu)
+
     #constantes de zones
     @property
     def my_zone(self):
-        bg = Vector2D(0,0)
-        hd = Vector2D(settings.GAME_WIDTH/2,settings.GAME_HEIGHT)
-        z = zone(bg,hd)
         if (self.key[0] == 1):
-            return z
+            return z[0]
         else:
-            return z.zone_mirroir
+            return z[1]
 
     @property
     def adv_zone(self):
-        if (self.key[0] != 1):
-            return zone(Vector2D(0,0),Vector2D(settings.GAME_WIDTH/2,settings.GAME_HEIGHT))
+        if (self.key[0] == 1):
+            return z[1]
         else:
-            return zone(Vector2D(settings.GAME_WIDTH/2,0),Vector2D(settings.GAME_WIDTH, settings.GAME_HEIGHT))
+            return z[0]
 
     
     #fonction bas niveau
@@ -179,7 +212,28 @@ class PlayerDecorator(object):
     @property
     def equ_in_my_zone(self):
         return self.equ_dans_zone(self.my_zone)
-    
 
-    
 #Gestion du terrain
+    def zone_libre(self,liste_zone):
+        for i in liste_zone:
+            if (self.adv_dans_zone(i)):
+                return i
+        return zone(Vector2D(0,0),Vector2D(0,0))
+
+    def rechercher_zone_libre(self,zone):
+        L = []
+        new = [zone]
+        temp = []
+        while self.zone_libre(L).bg == Vector2D(0,0) and elf.zone_libre(L).hd == Vector2D(0,0):
+            for i in new:
+                temp.append(i.division_horizontale)
+                temp.append(j.division_verticale)
+                L.append[i]
+                new = []
+                new = new + temp
+                temp = []
+        return self.zone_libre(L)
+    
+            
+
+   

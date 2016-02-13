@@ -15,8 +15,8 @@ joueur6 = Player("Joueur 6",TestStrategy())
 
 team1 = SoccerTeam("team1",[joueur1])
 team2 = SoccerTeam("team2",[joueur1,joueur2])
-team3 = SoccerTeam("team3",[joueur6,joueur2])
+team3 = SoccerTeam("team3",[joueur6,joueur1])
 team4 = SoccerTeam("team4",[joueur1,joueur1,joueur2,joueur2])
 
-match = SoccerMatch(team3, team3)
+match = SoccerMatch(team1, team3)
 soccersimulator.show(match)

@@ -5,6 +5,7 @@ from soccersimulator import Vector2D, Player, SoccerTournament
 from soccersimulator import settings
 from PlayerDecorator import *
 from zone import *
+from tools import *
 
 class RandomStrategy(BaseStrategy):
     def __init__(self):
@@ -17,7 +18,8 @@ class FonceurStrategy(BaseStrategy):
         BaseStrategy.__init__(self,"FonceurStrategy")
     def compute_strategy(self, state, teamid,player):
         etat = PlayerDecorator(state, teamid, player)
-        return etat.go_ball + etat.gere_shoot
+        return fonceur(etat)
+        #return etat.go_ball + etat.gere_shoot
         
 class GardienStrategy(BaseStrategy):
     def __init__(self):
@@ -90,8 +92,7 @@ class TestStrategy(BaseStrategy):
         BaseStrategy.__init__(self,"TestStrategy")
     def compute_strategy(self, state, teamid,player):
         etat = PlayerDecorator(state,teamid,player)
-        zone = etat.my_zone
-        return  etat.go(zone.alea())
+        return goal(etat)
 
 
 Defens = StratStateless(defenseur)
