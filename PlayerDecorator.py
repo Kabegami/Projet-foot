@@ -4,13 +4,14 @@ from soccersimulator import SoccerTeam, SoccerMatch
 from soccersimulator import Vector2D, Player, SoccerTournament
 from soccersimulator import settings
 from zone import *
+from miroir import *
 
 class PlayerDecorator(object):
     def __init__(self, state, idteam,player):
         self.state = state
         self.key = (idteam,player)
-        self.but1 = Vector2D(settings.GAME_WIDTH,settings.GAME_HEIGHT/2.0)
-        self.but2 = Vector2D(0,settings.GAME_HEIGHT/2.0)
+        self.adv_but = Vector2D(settings.GAME_WIDTH,settings.GAME_HEIGHT/2.0)
+        self.my_but = Vector2D(0,settings.GAME_HEIGHT/2.0)
         self.adv = []
         self.equipe = []
         #Crer une liste contenant ses adversaire et une autre pour sont equipe
@@ -77,22 +78,6 @@ class PlayerDecorator(object):
             if self.my_position.distance(i.position) < distance:
                 distance = self.my_position.distance(i.position)
         return distance
-
-    @property
-    def my_but(self):
-        mes_but = Vector2D(0,settings.GAME_HEIGHT/2)
-        if (self.key[0] == 1):
-            return mes_but
-        else:
-            return(terrain.mirroir(mes_but))
-
-    @property
-    def adv_but(self):
-        V = Vector2D(settings.GAME_WIDTH,settings.GAME_HEIGHT/2)
-        if (self.key[0] == 1):
-            return V
-        else:
-            return terrain.mirroir(V)
         
     #fonction de deplacement
     def go(self,p):
@@ -127,32 +112,14 @@ class PlayerDecorator(object):
         else:
             return False
 
-    #a supprimer
-    @property
-    def gere_shoot(self):
-        if (self.can_shoot):
-            return self.shoot_but
-        else:
-            return SoccerAction(Vector2D(0,0))
-
-        
     def degage(self,zone):
-        if (self.key[0] == 0):
-            if not(self.adv_dans_zone(zone.division_horizontale[0])):
-                return self.shoot(zone.division_horizontale[0].milieu)
-            else:
-                if not(self.adv_dans_zone(zone.division_horizontale[1])):
-                    return self.shoot(zone.division_horizontale[1].milieu)
-                else:
-                    return self.passe
+        if not(self.adv_dans_zone(zone.division_horizontale[0])):
+            return self.shoot(zone.division_horizontale[0].milieu)
         else:
-            if not(self.adv_dans_zone(zone.division_horizontale[0])):
-                return self.shoot(zone.division_horizontale[0].milieu)
+            if not(self.adv_dans_zone(zone.division_horizontale[1])):
+                return self.shoot(zone.division_horizontale[1].milieu)
             else:
-                if not(self.adv_dans_zone(zone.division_horizontale[1])):
-                    return self.shoot(zone.division_horizontale[1].milieu)
-                else:
-                    return self.passe
+                return self.passe
 
                 
     #def degage2(self):
@@ -169,19 +136,20 @@ class PlayerDecorator(object):
     #constantes de zones
     @property
     def my_zone(self):
-        if (self.key[0] == 1):
-            return z[0]
-        else:
-            return z[1]
+        return z[0]
+
+    @property
+    def my_but_zone(self):
+        return self.my_zone.division_verticale[0]
 
     @property
     def adv_zone(self):
-        if (self.key[0] == 1):
-            return z[1]
-        else:
-            return z[0]
+        return z[1]
 
-    
+    @property
+    def adv_but_zone(self):
+        return self.adv_zone.division_verticale[1]
+
     #fonction bas niveau
     def dans_zone(self,zone,position):
         return zone.vecteur_dans_zone(position)

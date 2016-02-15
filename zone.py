@@ -37,14 +37,18 @@ class zone(object):
     
 
     #important
-    def mirroir(self,Vecteur):
+    def miroir_point(self,Vecteur):
         V = self.normalisation(Vecteur)
-        V.x = -(V.x)
+        V.x = -1*(V.x)
         V = self.denormalisation(Vecteur)
         return V
 
+    def miroir_vecteur(self,Vecteur):
+        Vecteur.x = -1*(Vecteur.x);
+        return Vecteur;
+
     @property
-    def zone_mirroir(self):
+    def zone_miroir(self):
         c1 = Vector2D(0,-1)
         c2 = Vector2D(1,1)
         c1 = self.denormalisation(c1)
@@ -110,4 +114,3 @@ droite = z[1]
 bg_milieu = terrain.denormalisation(Vector2D(-0.5,-1))
 hd_milieu = terrain.denormalisation(Vector2D(0.5,1))
 m = zone(bg_milieu,hd_milieu)
-

@@ -15,6 +15,35 @@ def goal(etat):
     else:
         return etat.go(etat.my_but) + etat.shoot_but
 
+def attaquant(etat):
+    if etat.j_dans_zone(etat.adv_but_zone):
+        return fonceur(etat)
+    else:
+        if etat.j_dans_zone(etat.adv_zone):
+            if etat.j_dans_zone(etat.adv_zone.division_horizontale[0]):
+                return etat.go_ball + etat.shoot(etat.adv_but_zone.division_horizontale[0].milieu)
+            else:
+                return etat.go_ball + etat.shoot(etat.adv_but_zone.division_horizontale[1].milieu)
+        else:
+            return fonceur(etat)
+
+def defenseur(etat):
+    if etat.distance_ball < etat.adv_proche_distance or not(etat.balle_dans_zone(etat.my_but_zone)):
+        return fonceur(etat)
+    if etat.balle_dans_zone(etat.my_zone.division_horizontale[0]):
+        return etat.go(etat.my_zone.division_horizontale[1].division_verticale[1].milieu) + etat.shoot_but
+    if etat.balle_dans_zone(etat.my_zone.division_horizontale[1]):
+        return etat.go(etat.my_zone.division_horizontale[0].division_verticale[0].milieu) + etat.shoot_but
+    else:
+        return fonceur(etat)
+
+def solo(etat):
+    if etat.balle_dans_zone(etat.my_but_zone):
+        return goal(etat)
+    else:
+        return fonceur(etat)
+
+    
 def milieu(etat):
     if not(etat.adv_dans_zone(m)):
         return fonceur(etat)
