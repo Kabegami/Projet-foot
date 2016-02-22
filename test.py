@@ -16,7 +16,8 @@ joueur5 = Player("Joueur 5", defense)
 joueur6 = Player("Joueur 6", j_solo)
 
 team1 = SoccerTeam("team1",[joueur6])
-test = SoccerTeam("test",[joueur1])
+test = SoccerTeam("test",[joueur4])
+test2 = SoccerTeam("test2",[joueur2])
 team2 = SoccerTeam("team2",[joueur2,joueur4])
 team4 = SoccerTeam("team4",[joueur2,joueur5,joueur4,joueur1])
 
@@ -31,5 +32,5 @@ eleve = Player("eleve",strat)
 team_spe = SoccerTeam("team_eleve",[eleve])
 
 #match = SoccerMatch(team1, team_spe)
-match = SoccerMatch(team4, team4)
+match = SoccerMatch(test,test2)
 soccersimulator.show(match)

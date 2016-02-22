@@ -109,8 +109,11 @@ class zone(object):
 
 terrain = zone(Vector2D(0,0),Vector2D(settings.GAME_WIDTH, settings.GAME_HEIGHT))
 z = terrain.division_verticale
-gauche = z[0]
-droite = z[1]
+t_gauche = z[0]
+t_droite = z[1]
+
+Liste_zone = []
+
 bg_milieu = terrain.denormalisation(Vector2D(-0.5,-1))
 hd_milieu = terrain.denormalisation(Vector2D(0.5,1))
 m = zone(bg_milieu,hd_milieu)

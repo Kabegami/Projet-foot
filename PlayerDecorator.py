@@ -55,11 +55,9 @@ class PlayerDecorator(object):
     @property
     def equ_proche(self):
         distance = 10000
-        a = terrain.milieu
         for i in self.equipe:
             if self.my_position.distance(i.position) < distance:
                 distance = self.my_position.distance(i.position)
-                a = i.position
         return a
                    
     #gestion des distances
@@ -101,7 +99,16 @@ class PlayerDecorator(object):
     @property
     def passe(self): 
         return self.shoot(self.equ_proche)
-    
+
+    def small_shoot(self,p):
+        if self.can_shoot:
+            return SoccerAction(Vector2D(0,0), 0.10 *(p - self.my_position))
+        else:
+            return SoccerAction(Vector2D(0,0),Vector2D(0,0))
+        
+    @property
+    def small_shoot_but(self):
+        return self.small_shoot(self.adv_but)
 
     #trigger
 
@@ -119,7 +126,7 @@ class PlayerDecorator(object):
             if not(self.adv_dans_zone(zone.division_horizontale[1])):
                 return self.shoot(zone.division_horizontale[1].milieu)
             else:
-                return self.passe
+                return self.shoot_but
 
                 
     #def degage2(self):
@@ -208,6 +215,6 @@ class PlayerDecorator(object):
                 temp = []
         return self.zone_libre(L)
     
-            
-
-   
+    @property
+    def zone_joueur(self):
+        return zone(self.my_position - Vector2D(10,10),self.my_position + Vector2D(10,10))

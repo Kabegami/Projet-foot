@@ -13,7 +13,7 @@ def goal(etat):
     if (etat.distance_ball) < 20:
         return etat.go_ball + etat.degage(etat.my_zone)
     else:
-        return etat.go(etat.my_but) + etat.shoot_but
+        return etat.go(etat.my_but) + SoccerAction(Vector2D(5,0),Vector2D(0,0)) + etat.shoot_but
 
 def attaquant(etat):
     if etat.j_dans_zone(etat.adv_but_zone):
@@ -21,9 +21,9 @@ def attaquant(etat):
     else:
         if etat.j_dans_zone(etat.adv_zone):
             if etat.j_dans_zone(etat.adv_zone.division_horizontale[0]):
-                return etat.go_ball + etat.shoot(etat.adv_but_zone.division_horizontale[0].milieu)
+                return etat.go_ball + etat.small_shoot(etat.adv_zone.division_horizontale[0].milieu)
             else:
-                return etat.go_ball + etat.shoot(etat.adv_but_zone.division_horizontale[1].milieu)
+                return etat.go_ball + etat.small_shoot(etat.adv_zone.division_horizontale[1].milieu)
         else:
             return fonceur(etat)
 
