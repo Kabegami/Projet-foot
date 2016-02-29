@@ -1,3 +1,4 @@
+
 import soccersimulator,soccersimulator.settings
 from soccersimulator import BaseStrategy, SoccerAction
 from soccersimulator import SoccerTeam, SoccerMatch
@@ -58,6 +59,7 @@ class PlayerDecorator(object):
         for i in self.equipe:
             if self.my_position.distance(i.position) < distance:
                 distance = self.my_position.distance(i.position)
+                a = i.position
         return a
                    
     #gestion des distances
@@ -80,6 +82,10 @@ class PlayerDecorator(object):
     #fonction de deplacement
     def go(self,p):
         return SoccerAction(p - self.my_position, Vector2D(0,0))
+
+    #ce positionne de maniere a etre alligne avec la balle et le vecteur shoot_but
+    def smart_go(self,p):
+        v = self.adv_but - self.ball_position
     
     @property
     def go_ball(self):
@@ -97,8 +103,9 @@ class PlayerDecorator(object):
         return self.shoot(self.adv_but)
 
     @property
-    def passe(self): 
-        return self.shoot(self.equ_proche)
+    def passe(self):
+        distance = self.my_position.distance(self.equ_proche)
+        return SoccerAction(Vector2D(0,0), distance/6.0 *(self.equ_proche - self.my_position))
 
     def small_shoot(self,p):
         if self.can_shoot:
@@ -109,7 +116,8 @@ class PlayerDecorator(object):
     @property
     def small_shoot_but(self):
         return self.small_shoot(self.adv_but)
-
+            
+    
     #trigger
 
     @property

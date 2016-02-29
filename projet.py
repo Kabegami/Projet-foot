@@ -52,6 +52,7 @@ fonceStrat= StratStateless(fonceur)
 attaque = StratStateless(attaquant)
 defense = StratStateless(defenseur)
 j_solo = StratStateless(solo)
+toto = StratStateless(test)
 
 joueur1 = Player("Joueur 1", fonceStrat)
 joueur2 = Player("Joueur 2", gardien)
