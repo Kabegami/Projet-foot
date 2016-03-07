@@ -10,7 +10,7 @@ from projet import *
 import sys
 
 if __name__=="__main__":
-    prefix = "train"
+    prefix = "tree"
     if len(sys.argv)>1:
         prefix = sys.argv[1]
     strat_key = KeyboardStrategy()
@@ -18,8 +18,8 @@ if __name__=="__main__":
     strat_key.add("g",gardien)
     strat_key.add("a",attaque)
     strat_key.add("d",defense)
-    team_noob = SoccerTeam("keyb",[Player("KBs", strat_key)])
-    team_bad = SoccerTeam("foncteam",[Player("toto",j_solo)])
+    team_noob = SoccerTeam("keyb",[Player("KBs", strat_key),Player("Defense",defense)])
+    team_bad = SoccerTeam("foncteam",[Player("toto",attaque),Player("tata", gardien)])
     match = SoccerMatch(team_noob,team_bad,1000)
     show(match)
     strat_key.write(prefix+".exp",True)

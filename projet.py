@@ -53,10 +53,11 @@ attaque = StratStateless(attaquant)
 defense = StratStateless(defenseur)
 j_solo = StratStateless(solo)
 toto = StratStateless(test)
+dio = StratStateless(campe)
+doge = StratStateless(evite)
 
 joueur1 = Player("Joueur 1", fonceStrat)
 joueur2 = Player("Joueur 2", gardien)
-joueur3 = Player("Joueur 3", MilieuStrategy())
 joueur4 = Player("Joueur 4", attaque)
 joueur5 = Player("Joueur 5", defense)
 

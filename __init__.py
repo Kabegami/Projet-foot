@@ -7,6 +7,8 @@ joueur4 = Player("Joueur 4", attaque)
 joueur5 = Player("Joueur 5", defense)
 joueur6 = Player("Joueur 6", j_solo)
 
+
 team1 = SoccerTeam("team2",[joueur6])
 team2 = SoccerTeam("team1",[joueur2,joueur4])
 team4 = SoccerTeam("team4",[joueur2,joueur5,joueur4,joueur1])
+teamIA = SoccerTeam("teamIA",[Player("IA",treeStrat),joueur2]
