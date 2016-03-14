@@ -47,11 +47,16 @@ def campe(etat):
         return etat.go(t_droite.division_horizontale[1].milieu)
 
 def test(etat):
-    return etat.passe
+    if etat.equ_proche_distance > 5:
+        return etat.drible(etat.equ_proche) + etat.go_ball
+    else:
+        return etat.passe2
 
 def evite(etat):
     if etat.adv_proche_distance < 10:
         return etat.evite(etat.adv_but) + etat.go_ball
     else:
-        return drible_but + etat.go_ball
-
+        if (etat.distance_but_adv < 30):
+            return etat.vise(etat.adv_but)
+        else:
+            return etat.drible_but + etat.go_ball

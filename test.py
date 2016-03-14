@@ -20,14 +20,15 @@ dio = Player("Dio",dio)
 j8 = Player("doge",doge)
 
 team1 = SoccerTeam("team1",[joueur6])
+toto_team = SoccerTeam("toto_team",[j7,joueur2])
 test = SoccerTeam("test",[j7,joueur2,dio])
 test2 = SoccerTeam("test2",[joueur1,joueur2])
 test3 = SoccerTeam("test2",[joueur2])
-test4 = SoccerTeam("test4",[j8])
-team2 = SoccerTeam("team2",[joueur2,joueur4])
-team4 = SoccerTeam("team4",[joueur2,joueur5,joueur4,joueur1])
+test4 = SoccerTeam("test4",[joueur6])
+team2 = SoccerTeam("team2",[joueur2,j8])
+team4 = SoccerTeam("team4",[joueur2,j8,joueur5,j8])
 
-#apprentissage supervise
+#apprentissage superviseshell
 strat = KeyboardStrategy()
 strat.add("f",fonceStrat)
 strat.add("g",gardien)
@@ -39,6 +40,7 @@ team_spe = SoccerTeam("team_eleve",[eleve])
 team_arbre = SoccerTeam("IA",[Player("IA",treeStrat)])
 
 #match = SoccerMatch(team_arbre, team_arbre)
-match = SoccerMatch(test4,team1)
+#match = SoccerMatch(test3,toto_team)
+match = SoccerMatch(team4, test2)
 soccersimulator.show(match)
 strat.write("mon_fichier.exp")

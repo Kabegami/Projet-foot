@@ -1,4 +1,3 @@
-
 import soccersimulator,soccersimulator.settings
 from soccersimulator import BaseStrategy, SoccerAction
 from soccersimulator import SoccerTeam, SoccerMatch
@@ -43,7 +42,13 @@ class PlayerDecorator(object):
     @property
     def distance_my_but(self):
         return self.my_position.distance(self.my_but)
-    
+
+    def angle(self,position):
+        return (position - self.my_position).angle
+
+    @property
+    def angle_adv_proche(self):
+        return angle(self.adv_proche)
     @property
     def adv_proche(self):
         distance = 10000
@@ -87,8 +92,8 @@ class PlayerDecorator(object):
     def go(self,p):
         return SoccerAction(p - self.my_position, Vector2D(0,0))
 
-    def vise(self, p):
-        if (not(self.distance_adv_ball > self.distance_ball + 5) and  not(self.distance_ball > 5) and not(self.ball_position.x < self.my_position.x + 5)):
+    def vise(self,p):
+        if (not((self.ball_position - self.my_position).angle <= 5)):
             V = (self.ball_position - p)*1.05
             return SoccerAction((p + V) - self.my_position, Vector2D(0,0))
         else:
@@ -123,8 +128,9 @@ class PlayerDecorator(object):
             return SoccerAction(Vector2D(0,0),Vector2D(0,0))
 
     def evite(self,p):
+        angle_adv = self.adv_proche.angle
         if self.can_shoot:
-            return SoccerAction(Vector2D(0,0),p - Vector2D(angle=20,norm=1))
+            return SoccerAction(Vector2D(0,0),p - Vector2D(-angle_adv,norm=0.25))
         else:
             return SoccerAction(Vector2D(0,0),Vector2D(0,0))
             
@@ -134,7 +140,7 @@ class PlayerDecorator(object):
         return self.shoot(self.adv_but)
 
     @property
-    def trouve_attaquant(self):
+    def trouve_attaquant(self): 
         distance = 10000
         for i in self.equipe:
             if (i.position).distance(self.adv_but) < distance:
@@ -153,7 +159,16 @@ class PlayerDecorator(object):
                 return SoccerAction((self.equ_proche + V) - self.my_position, Vector2D(0,0))
             else:
                 return SoccerAction(self.ball_position - self.my_position, 0.2 *(self.equ_proche - self.my_position))
-        
+
+    @property
+    def passe2(self):
+        distance = self.equ_proche_distance
+        if (not((self.ball_position - self.my_position).angle <= 5)):
+            V = (self.ball_position - self.equ_proche)*1.05
+            return SoccerAction((self.equ_proche + V) - self.my_position, Vector2D(0,0))
+        else:
+            return SoccerAction(self.ball_position - self.my_position,(self.equ_proche - self.my_position)*distance/4)
+
 
     def small_shoot(self,p):
         if self.can_shoot:
