@@ -11,9 +11,13 @@ def fonceur(etat):
 
 def goal(etat):
     if (etat.distance_ball) < 20:
-        return etat.go_ball + etat.degage(etat.my_zone)
+        res =  etat.go_ball + etat.degage(etat.my_zone)
+        res.name = "degage"
+        return res
     else:
-        return etat.go(etat.my_but) + SoccerAction(Vector2D(5,0),Vector2D(0,0)) + etat.shoot_but
+        res =  etat.go(etat.my_but) + SoccerAction(Vector2D(5,0),Vector2D(0,0)) + etat.shoot_but
+        res.name = "garde"
+        return res
 
 def defenseur(etat):
     if etat.distance_ball < etat.adv_proche_distance or not(etat.balle_dans_zone(etat.my_but_zone)):
@@ -33,9 +37,13 @@ def solo(etat):
 
 def attaquant(etat):
     if etat.dans_zone(etat.adv_but_zone,etat.my_position):
-        return etat.vise_but
+        res = etat.vise_but
+        res.name = "visebut"
+        return res
     else:
-        return etat.go_ball + etat.drible_but
+        res =  etat.go_ball + etat.drible_but
+        res.name = "driblebut"
+        return res
 
 def campe(etat):
     if etat.distance_ball < 20:
@@ -54,9 +62,19 @@ def test(etat):
 
 def evite(etat):
     if etat.adv_proche_distance < 10:
-        return etat.evite(etat.adv_but) + etat.go_ball
+        res = etat.evite(etat.adv_but) + etat.go_ball
+        res.name = "evite"
+        return res
     else:
         if (etat.distance_but_adv < 30):
-            return etat.vise(etat.adv_but)
+            res = etat.vise(etat.adv_but)
+            res.name = "visebut"
+            return res
         else:
-            return etat.drible_but + etat.go_ball
+            res =  etat.drible_but + etat.go_ball
+            res.name = "driblebut"
+            return res
+
+#-------------------------------------------------------
+#Strat IA
+#-------------------------------------------------------

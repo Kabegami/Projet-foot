@@ -6,6 +6,7 @@ from soccersimulator import settings
 from PlayerDecorator import *
 from zone import *
 from tools import *
+from ia import *
 
 class RandomStrategy(BaseStrategy):
     def __init__(self):
@@ -32,6 +33,7 @@ class StratStateless(BaseStrategy):
     def __init__(self,decideur):
         BaseStrategy.__init__(self,decideur.__name__)
         self.decideur = decideur
+        self.log = []
     def compute_strategy(self,state,idt,idp):
         if(idt != 1):
             miroir = MiroirState(state)
@@ -46,6 +48,15 @@ class GoalStrategy(BaseStrategy):
     def compute_strategy(self, state, teamid,player):
         etat = PlayerDecorator(state,teamid,player)
         return goal(etat)
+
+class Monte_Carlo_Strat(BaseStrategy):
+    def __init__(self):
+       BaseStrategy.__init__(self,"Monte_Carlo")
+       self.dico = dict()
+    def compute_strategy(self,state,teamid,player):
+       etat_discret = transformation_etat(state,teamid,player)
+       action = [degage,garde,visebut,driblebut,evite]
+       return best_act(dico,etat_discret,action)
 
 gardien = StratStateless(goal)
 fonceStrat= StratStateless(fonceur)
