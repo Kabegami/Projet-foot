@@ -6,7 +6,6 @@ from soccersimulator import settings
 from projet import *
 from PlayerDecorator import *
 from decisiontree import *
-from train import *
 
 def distance(distance):
     # tres proche

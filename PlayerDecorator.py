@@ -26,7 +26,7 @@ class PlayerDecorator(object):
     @property
     def my_position(self):
         return self.state.player_state(self.key[0], self.key[1]).position
-    
+
     @property
     def ball_position(self):
         return self.state.ball.position
