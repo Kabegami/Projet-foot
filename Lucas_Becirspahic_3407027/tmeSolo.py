@@ -138,7 +138,7 @@ team1 = SoccerTeam("team 2",[j1])
 team3 = SoccerTeam("team 3",[j1,j1,j1])
 team4 = SoccerTeam("team 4",[j1,j1,j1,j1])
 
-match = SoccerMatch(team4,team3,init_state=PADState.create_initial_state(4,3))
-show(match)
+#match = SoccerMatch(team4,team3,init_state=PADState.create_initial_state(4,3))
+#show(match)
 
 
