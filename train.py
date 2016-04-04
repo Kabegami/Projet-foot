@@ -9,19 +9,34 @@ from tools import *
 from zone import *
 from ia import *
 
-IA = Monte_Carlo_Strat()
-test= StratStateless(attaquant2)
+try:
+    IA
+except NameError:
+    IA = Monte_Carlo_Strat()
 
 joueurIA = Player("JoueurIA",IA)
 joueur6 = Player("Joueur 6", j_solo)
-jtest = Player("jTest",test)
 
 teamIA = SoccerTeam("teamIA",[joueurIA])
 teamAdv = SoccerTeam("teamAdv",[joueur6])
-teamAdv2 = SoccerTeam("teamAdv2",[jtest])
+teamAdv2 = SoccerTeam("teamAdv",[joueur2])
 
-Monte_Carlo("fichier","action",IA,1,0)
+if os.path.getsize("action") != 0:
+    a = open("action","a")
+    for i in range(0,10):
+        a.write("\n goal")
+    a.close()
+    Monte_Carlo("fichier","action",IA,1,0)
+
+#on supprime le fichier action apres l'apprentissage
+a = open("action","w")
+a.close()
 match = SoccerMatch(teamIA, teamAdv2)
+#on efface l'ancien match
+a = open("fichier","w")
+a.close()
 soccersimulator.show(match)
 match.save("fichier")
 
+#pb : Comment notre joueur perd contre l'attaquant et a match nulle contre le defenseur donc il ne change pas asser, il faut donc que je lui donnes des examples avec la KeyBoard Strat
+# et on observe que l'exploration est tres longue

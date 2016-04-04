@@ -1,0 +1,2 @@
+from projet import *
+from ia import *

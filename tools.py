@@ -13,11 +13,12 @@ def fonceur(etat):
 def goal(etat):
     if (etat.distance_ball) < 20:
         res =  etat.go_ball + etat.degage(etat.my_zone)
-        res.name = "degage"
+        res.name = "goal"
+        
         return res
     else:
         res =  etat.go(etat.my_but) + SoccerAction(Vector2D(5,0),Vector2D(0,0)) + etat.shoot_but
-        res.name = "garde"
+        res.name = "goal"
         return res
 
 def defenseur(etat):
@@ -39,11 +40,11 @@ def solo(etat):
 def attaquant(etat):
     if etat.dans_zone(etat.adv_but_zone,etat.my_position):
         res = etat.vise_but
-        res.name = "visebut"
+        res.name = "attaquant"
         return res
     else:
         res =  etat.go_ball + etat.drible_but
-        res.name = "driblebut"
+        res.name = "attaquant"
         return res
 
 def campe(etat):
@@ -69,11 +70,11 @@ def evite(etat):
     else:
         if (etat.distance_but_adv < 30):
             res = etat.vise(etat.adv_but)
-            res.name = "visebut"
+            res.name = "evite"
             return res
         else:
             res =  etat.drible_but + etat.go_ball
-            res.name = "driblebut"
+            res.name = "evite"
             return res
 
 def attaquant2(etat):

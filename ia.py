@@ -30,7 +30,8 @@ def angle(angle):
 
 def transformation_etat(state, idteam,player):
     etat = PlayerDecorator(state,idteam,player)
-    etat_discret = [distance(etat.distance_ball),distance(etat.distance_but_adv),distance(etat.distance_my_but),distance(etat.adv_proche_distance),angle(etat.angle_adv_proche)]
+    etat_discret = (distance(etat.distance_ball),distance(etat.distance_but_adv),distance(etat.distance_my_but),distance(etat.adv_proche_distance),angle(etat.angle_adv_proche))
+    #print("type etat discret",type(etat_discret))
     return etat_discret
 
 
@@ -49,8 +50,11 @@ from collections import defaultdict
 
 #retourne la meilleurs action locale
 def best_act(dico,state,act):
+    #Attention un dictionnaire NE PEUT PAS CONTENIR DES LISTE donc pb pour action essayer avec des tuples
     maxi = 0
     for action in act:
+        if action not in dico[state]:
+            dico[state][action] = 10
         if dico[state][action] > maxi:
             maxi = dico[state][action]
             best_act = action 
@@ -62,10 +66,11 @@ def best_act(dico,state,act):
 def apprend_Monte_Carlo(dico, scenario, it, ip):
     gamma=1
     R=0
-    alpha=0.1
+    alpha=2
+    #print("apprend Monte Carlo",type(dico))
     #on parcours les etat en partant par les etats finales
-    for (etat,action) in scenario[::-1]:
-        R=gamma*R + recompense(etat,it,ip)
+    for (etat,action,state) in scenario[::-1]:
+        R=gamma*R + recompense(state,it,ip)
         #si on n a pas encore croise cette situation, on initialise Q
         if etat not in dico:
             dico[etat] = defaultdict(float)
@@ -95,6 +100,7 @@ class LogStrategy(KeyboardStrategy):
 
 #fonction qui prend un soccerMatch d'etat et un fichier action et les convertis en un scenario pour le Monte-Carlo
 def creation_scenario(etats, action, it, ip):
+    #un scenario est un tuple (etat_discret, action, SoccerState
     m = SoccerMatch.load(etats)
     f = open(action,"r")
     a = f.read()
@@ -102,8 +108,10 @@ def creation_scenario(etats, action, it, ip):
     i = 0
     scenario = []
     for etat_j in m.states:
-        tuple = (etat_j, liste[i])
+        #pb nombre d'etat variable celon les match
+        tuple = (transformation_etat(etat_j,it,ip), liste[i],etat_j)
         scenario.append(tuple)
+        print("i : ",i)
         i = i + 1
     f.close()
     return scenario

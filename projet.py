@@ -55,8 +55,18 @@ class Monte_Carlo_Strat(BaseStrategy):
        self.dico = dict()
     def compute_strategy(self,state,teamid,player):
        etat_discret = transformation_etat(state,teamid,player)
-       action = [gardien,attaque,doge]
-       return best_act(self.dico,etat_discret,action)
+       etat = PlayerDecorator(state,teamid,player)
+       action = [goal(etat),attaquant(etat),evite(etat)]
+       #gestion de l'enregistrement des actions dans le fichier action
+       a = sys.stdout
+       sys.stdout =open('action','a')
+       if etat_discret not in self.dico:
+            self.dico[etat_discret] = defaultdict(float)
+       res =  best_act(self.dico,etat_discret,action)
+       print(res.name)
+       sys.stdout.close()
+       sys.stdout=a
+       return res
 
 gardien = StratStateless(goal)
 fonceStrat= StratStateless(fonceur)
@@ -78,4 +88,6 @@ joueur5 = Player("Joueur 5", defense)
 #team1 = SoccerTeam("team1",[joueur1,joueur2,joueur3,joueur3])
 #team2 = SoccerTeam("team2",[joueur1,joueur2,joueur3,joueur3])
 #match = SoccerMatch(team1, team2)
+
 #soccersimulator.show(match)
+
