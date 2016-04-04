@@ -6,6 +6,7 @@ from soccersimulator import settings
 from projet import *
 from PlayerDecorator import *
 from decisiontree import *
+import os
 
 def distance(distance):
     # tres proche
@@ -33,14 +34,14 @@ def transformation_etat(state, idteam,player):
     return etat_discret
 
 
-def recompense(etat):
+def recompense(state,it,ip):
     #marque un but
-    if (etat.state.winning_team == etat.id_team):
+    if (state.winning_team == it):
         return 100
-    if (etat.state.winning_team != 0):
+    if (state.winning_team != it):
         return -100
     #possede la balle
-    if (etat.ball_position.distance(etat.my_position) < 10):
+    if (state.ball.position.distance(state.player_state(it,ip).position) < 10):
         return 1
     return -1
 
@@ -58,13 +59,13 @@ def best_act(dico,state,act):
 #Pour la strategie de l ia, on prend le chemin avec la meilleur esperance d action
 
 
-def apprend_Monte_Carlo(dico, scenario):
+def apprend_Monte_Carlo(dico, scenario, it, ip):
     gamma=1
     R=0
     alpha=0.1
     #on parcours les etat en partant par les etats finales
     for (etat,action) in scenario[::-1]:
-        R=gamma*R + recompense(etat)
+        R=gamma*R + recompense(etat,it,ip)
         #si on n a pas encore croise cette situation, on initialise Q
         if etat not in dico:
             dico[etat] = defaultdict(float)
@@ -72,11 +73,9 @@ def apprend_Monte_Carlo(dico, scenario):
         dico[etat][action]=dico[etat][action] + alpha*(R-dico[etat][action])
 
 
-def Monte_Carlo(fichier):
-    m = SoccerMatch.load(fichier)
-    # Liste d etat du match
-    L_etat = m.states
-    apprend_Monte_Carlo(joueurIA.dico,L_etat)
+def Monte_Carlo(fEtat,fAction, joueurIA,it,ip):
+    scenario = creation_scenario(fEtat,fAction,it,ip)
+    apprend_Monte_Carlo(joueurIA.dico,scenario,it, ip)
     
 
 class LogStrategy(KeyboardStrategy):
@@ -93,5 +92,20 @@ class LogStrategy(KeyboardStrategy):
         if key in self.dic_keys.key():
             self.cur=key
             self.name = self.dic_keys[self.cur].name
+
+#fonction qui prend un soccerMatch d'etat et un fichier action et les convertis en un scenario pour le Monte-Carlo
+def creation_scenario(etats, action, it, ip):
+    m = SoccerMatch.load(etats)
+    f = open(action,"r")
+    a = f.read()
+    liste = a.split()
+    i = 0
+    scenario = []
+    for etat_j in m.states:
+        tuple = (etat_j, liste[i])
+        scenario.append(tuple)
+        i = i + 1
+    f.close()
+    return scenario
     
-        
+    

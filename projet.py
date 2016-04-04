@@ -55,8 +55,8 @@ class Monte_Carlo_Strat(BaseStrategy):
        self.dico = dict()
     def compute_strategy(self,state,teamid,player):
        etat_discret = transformation_etat(state,teamid,player)
-       action = [degage,garde,visebut,driblebut,evite]
-       return best_act(dico,etat_discret,action)
+       action = [gardien,attaque,doge]
+       return best_act(self.dico,etat_discret,action)
 
 gardien = StratStateless(goal)
 fonceStrat= StratStateless(fonceur)
@@ -66,6 +66,7 @@ j_solo = StratStateless(solo)
 toto = StratStateless(test)
 dio = StratStateless(campe)
 doge = StratStateless(evite)
+test = StratStateless(attaquant2)
 
 joueur1 = Player("Joueur 1", fonceStrat)
 joueur2 = Player("Joueur 2", gardien)

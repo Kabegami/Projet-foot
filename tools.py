@@ -5,6 +5,7 @@ from soccersimulator import Vector2D, Player, SoccerTournament
 from soccersimulator import settings
 from zone import *
 from PlayerDecorator import *
+import sys
 
 def fonceur(etat):
     return etat.shoot_but + etat.go_ball
@@ -75,6 +76,23 @@ def evite(etat):
             res.name = "driblebut"
             return res
 
+def attaquant2(etat):
+    a = sys.stdout
+    sys.stdout=open('action','a')
+    if etat.dans_zone(etat.adv_but_zone,etat.my_position):
+        res = etat.vise_but
+        res.name = "visebut"
+        print("attaquant")
+        sys.stdout.close()
+        sys.stdout=a
+        return res
+    else:
+        res =  etat.go_ball + etat.drible_but
+        res.name = "driblebut"
+        print("attaquant")
+        sys.stdout.close()
+        sys.stdout=a
+        return res
 #-------------------------------------------------------
 #Strat IA
 #-------------------------------------------------------

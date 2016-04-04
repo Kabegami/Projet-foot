@@ -291,6 +291,9 @@ class PlayerDecorator(object):
     def zone_joueur(self):
         return zone(self.my_position - Vector2D(10,10),self.my_position + Vector2D(10,10))
 
+
+    #TME SOLO
+    #---------------------------------------------------------------------
     @property
     def trouve_porteur(self):
         for (it, ip) in self.state.players:
