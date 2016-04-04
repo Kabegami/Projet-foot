@@ -1,0 +1,45 @@
+from soccersimulator import *
+from tools import *
+from PlayerDecorator import *
+
+
+
+def immobile(etat):
+    return SoccerAction(Vector2D(0,0),Vector2D(0,0))  
+
+def passe(etat):
+    if etat.adv_proche_distance < 20:
+        etat.shoot(etat.equ_proche)
+    else:
+        return immobile(etat)
+
+
+class StratStateless(BaseStrategy):
+    def __init__(self,decideur):
+        BaseStrategy.__init__(self,decideur.__name__)
+        self.decideur = decideur
+        self.log = []
+    def compute_strategy(self,state,idt,idp):
+        if(idt != 1):
+            miroir = MiroirState(state)
+            #return self.decideur(PlayerDecorator(miroir,idt,idp))
+            return MiroirSoccerAction(self.decideur(PlayerDecorator(miroir,idt,idp)))
+        else:
+            return self.decideur(PlayerDecorator(state,idt,idp))
+
+
+#team evite
+passeur = StratStateless(passe)
+
+
+j1 = Player("Passeur", passeur)
+j2 = Player("Fonceur",fonceur)
+
+
+team2 = SoccerTeam("team 1",[j1,j1])
+team1 = SoccerTeam("team 2",[j2])
+
+match = SoccerMatch(team2,team1,init_state=PADState.create_initial_state(2,1))
+show(match)
+
+

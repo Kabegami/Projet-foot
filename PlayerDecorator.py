@@ -60,7 +60,8 @@ class PlayerDecorator(object):
 
     @property
     def equ_proche(self):
-        distance = 10000
+        distance = 100000
+        a = Vector2D(0,0)
         for i in self.equipe:
             if self.my_position.distance(i.position) < distance:
                 distance = self.my_position.distance(i.position)
@@ -289,3 +290,26 @@ class PlayerDecorator(object):
     @property
     def zone_joueur(self):
         return zone(self.my_position - Vector2D(10,10),self.my_position + Vector2D(10,10))
+
+    @property
+    def trouve_porteur(self):
+        for (it, ip) in self.state.players:
+            if (self.state.player_state(it,ip).position.distance(self.ball_position) < settings.PLAYER_RADIUS + settings.BALL_RADIUS):
+                return self.state.player_state(it,ip).position
+            else:
+                return self.ball_position
+            
+    @property
+    def porteur_equipe(self):
+        #renvoi l equipe du porteur de la balle et -1 si personne
+        for (it, ip) in self.state.players:
+            if (self.state.player_state(it,ip).position.distance(self.ball_position) < settings.PLAYER_RADIUS + settings.BALL_RADIUS):
+                return it
+        return  -1
+
+    @property
+    def milieu_seg(self,vecteur):
+        return etat.go(vecteur/2)
+
+    def passe_tme(self,position):
+        return SoccerAction(Vector2D(0,0),0.30*(position - self.my_position))
