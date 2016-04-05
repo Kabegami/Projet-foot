@@ -115,7 +115,7 @@ def creation_scenario(etats, action, it, ip):
         #pb nombre d'etat variable celon les match
         tuple = (transformation_etat(etat_j,it,ip), liste[i],etat_j)
         scenario.append(tuple)
-        print("i : ",i)
+        #print("i : ",i)
         i = i + 1
     f.close()
     return scenario
@@ -137,26 +137,50 @@ def init_IA(IA):
     except NameError:
         IA = Monte_Carlo_Strat()
     
-def joue_IA(IA, teamIA, teamAdv,it, ip,n):
-    for i in range(0,n):
-        #si le fichier d'action n'est pas vide on apprend
-        if os.path.getsize("action") != 0:
-            a = open("action","a")
-            for i in range(0,10):
-                a.write("\n goal")
-            a.close()
-            Monte_Carlo("fichier","action",IA,it,ip)
-        match = SoccerMatch(teamIA, teamAdv)
-        a = open("fichier","w")
+def joue_IA(IA, teamIA, teamAdv,it, ip):
+    #si le fichier d'action n'est pas vide on apprend
+    if os.path.getsize("action") != 0:
+        a = open("action","a")
+        for i in range(0,10):
+            a.write("\n goal")
         a.close()
-        #soccersimulator.show(match)
-        match.save("fichier")
+        Monte_Carlo("fichier","action",IA,it,ip)
+        #on supprime les anciennes actions
+        a = open("action","w")
+        a.close()
+    match = SoccerMatch(teamIA, teamAdv)
+    a = open("fichier","w")
+    a.close()
+    match.play()
+    match.save("fichier")
     #A la fin on enregistre le dico optenu
     enregistre_dico(IA)
 
+def affiche_joue_IA(IA, teamIA, teamAdv,it, ip):
+    #si le fichier d'action n'est pas vide on apprend
+    if os.path.getsize("action") != 0:
+        a = open("action","a")
+        for i in range(0,10):
+            a.write("\n goal")
+        a.close()
+        Monte_Carlo("fichier","action",IA,it,ip)
+        #on supprime les anciennes actions
+        a = open("action","w")
+        a.close()
+    match = SoccerMatch(teamIA, teamAdv)
+    a = open("fichier","w")
+    a.close()
+    match.play()
+    soccersimulator.show(match)
+    match.save("fichier")
+    #A la fin on enregistre le dico optenu
+    enregistre_dico(IA)
+
+#lance n fois un tournoi avec la liste des joueurs
 def tournoi_IA(IA, TeamIA, Liste,it,ip,n):
-    for i in Liste:
-        joue_IA(IA,TeamIA,i,it,ip,n)
+    for j in range(0,n+1):
+        for i in Liste:
+            joue_IA(IA,TeamIA,i,it,ip)
     
 
 def init_fichier(team1 ,team2):

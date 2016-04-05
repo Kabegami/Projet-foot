@@ -36,5 +36,7 @@ Liste.append(team2)
 Liste.append(team3)
 Liste.append(team4)
 
-init_fichier(team1,team2)
-tournoi_IA(IA,teamIA,Liste,1,0,20)
+if __name__ == "__main__":
+    init_fichier(team1,team2)
+    #tournoi_IA(IA,teamIA,Liste,1,0,5)
+    affiche_joue_IA(IA,teamIA,team1,1,0)
