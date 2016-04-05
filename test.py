@@ -41,6 +41,6 @@ team_arbre = SoccerTeam("IA",[Player("IA",treeStrat)])
 
 #match = SoccerMatch(team_arbre, team_arbre)
 #match = SoccerMatch(test3,toto_team)
-match = SoccerMatch(team4, test2)
-soccersimulator.show(match)
+#match = SoccerMatch(team4, test2)
+#soccersimulator.show(match)
 strat.write("mon_fichier.exp")

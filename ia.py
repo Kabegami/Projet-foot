@@ -7,6 +7,7 @@ from projet import *
 from PlayerDecorator import *
 from decisiontree import *
 import os
+from random import *
 
 def distance(distance):
     # tres proche
@@ -39,7 +40,10 @@ def recompense(state,it,ip):
     #marque un but
     if (state.winning_team == it):
         return 100
-    if (state.winning_team != it):
+    #si aucun but n'a ete marque
+    if (state.winning_team == 0):
+        return 0
+    if(state.winning_team != it):
         return -100
     #possede la balle
     if (state.ball.position.distance(state.player_state(it,ip).position) < 10):
@@ -54,7 +58,7 @@ def best_act(dico,state,act):
     maxi = 0
     for action in act:
         if action not in dico[state]:
-            dico[state][action] = 10
+            dico[state][action] = random()*9 + 1
         if dico[state][action] > maxi:
             maxi = dico[state][action]
             best_act = action 
@@ -66,7 +70,7 @@ def best_act(dico,state,act):
 def apprend_Monte_Carlo(dico, scenario, it, ip):
     gamma=1
     R=0
-    alpha=2
+    alpha=0.5
     #print("apprend Monte Carlo",type(dico))
     #on parcours les etat en partant par les etats finales
     for (etat,action,state) in scenario[::-1]:
@@ -115,5 +119,51 @@ def creation_scenario(etats, action, it, ip):
         i = i + 1
     f.close()
     return scenario
+
+#---------------------------------------------------------------
+#Fonctions relatives a l'utilisation de notre IA
+#---------------------------------------------------------------
+
+def enregistre_dico(IA):
+    temp = sys.stdout
+    sys.stdout = open("dico_apprentissage","w")
+    print(IA.dico)
+    sys.stdout.close()
+    sys.stdout = temp
+
+def init_IA(IA):
+    try:
+        IA
+    except NameError:
+        IA = Monte_Carlo_Strat()
     
+def joue_IA(IA, teamIA, teamAdv,it, ip,n):
+    for i in range(0,n):
+        #si le fichier d'action n'est pas vide on apprend
+        if os.path.getsize("action") != 0:
+            a = open("action","a")
+            for i in range(0,10):
+                a.write("\n goal")
+            a.close()
+            Monte_Carlo("fichier","action",IA,it,ip)
+        match = SoccerMatch(teamIA, teamAdv)
+        a = open("fichier","w")
+        a.close()
+        #soccersimulator.show(match)
+        match.save("fichier")
+    #A la fin on enregistre le dico optenu
+    enregistre_dico(IA)
+
+def tournoi_IA(IA, TeamIA, Liste,it,ip,n):
+    for i in Liste:
+        joue_IA(IA,TeamIA,i,it,ip,n)
+    
+
+def init_fichier(team1 ,team2):
+    if os.path.getsize("fichier") == 0:
+        match = SoccerMatch(team1,team2)
+        match.save("fichier")
+
+
+
     

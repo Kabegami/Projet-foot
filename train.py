@@ -21,6 +21,8 @@ teamIA = SoccerTeam("teamIA",[joueurIA])
 teamAdv = SoccerTeam("teamAdv",[joueur6])
 teamAdv2 = SoccerTeam("teamAdv",[joueur2])
 
+
+init_fichier(teamAdv,teamAdv2)
 if os.path.getsize("action") != 0:
     a = open("action","a")
     for i in range(0,10):
@@ -31,12 +33,23 @@ if os.path.getsize("action") != 0:
 #on supprime le fichier action apres l'apprentissage
 a = open("action","w")
 a.close()
-match = SoccerMatch(teamIA, teamAdv2)
-#on efface l'ancien match
-a = open("fichier","w")
-a.close()
-soccersimulator.show(match)
-match.save("fichier")
+
+if __name__ == "__main__":
+    match = SoccerMatch(teamIA, teamAdv2)
+    #on efface l'ancien match
+    a = open("fichier","w")
+    a.close()
+    
+    
+    #Si on veut enregister le dictionnaire
+    temp = sys.stdout
+    sys.stdout = open("dico_apprentissage","w")
+    print(IA.dico)
+    sys.stdout.close()
+    sys.stdout = temp
+    
+    soccersimulator.show(match)
+    match.save("fichier")
 
 #pb : Comment notre joueur perd contre l'attaquant et a match nulle contre le defenseur donc il ne change pas asser, il faut donc que je lui donnes des examples avec la KeyBoard Strat
 # et on observe que l'exploration est tres longue
