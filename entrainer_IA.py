@@ -9,10 +9,8 @@ from tools import *
 from zone import *
 from ia import *
 
-try:
-    IA
-except NameError:
-    IA = Monte_Carlo_Strat()
+dicoIA = ouvre_dico("dico_apprentissage")
+IA = Monte_Carlo_Strat()
 
 joueurIA = Player("JoueurIA",IA)
 #-----------------------------------------------
@@ -39,4 +37,4 @@ Liste.append(team4)
 if __name__ == "__main__":
     init_fichier(team1,team2)
     #tournoi_IA(IA,teamIA,Liste,1,0,5)
-    affiche_joue_IA(IA,teamIA,team1,1,0)
+    affiche_joue_IA(teamIA,team1,dicoIA,1,0)

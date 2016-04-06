@@ -52,21 +52,26 @@ class GoalStrategy(BaseStrategy):
 class Monte_Carlo_Strat(BaseStrategy):
     def __init__(self):
        BaseStrategy.__init__(self,"Monte_Carlo")
-       self.dico = dict()
+       #on initialise L'IA avec le dictionnaire stoquer dans dico_apprentissage
+       f = open('dico_apprentissage','r')
+       self.dico = pickle.load(f)
+       f.close()
     def compute_strategy(self,state,teamid,player):
-       etat_discret = transformation_etat(state,teamid,player)
-       etat = PlayerDecorator(state,teamid,player)
-       action = [goal(etat),attaquant(etat),evite(etat)]
-       #gestion de l'enregistrement des actions dans le fichier action
-       a = sys.stdout
-       sys.stdout =open('action','a')
-       if etat_discret not in self.dico:
+        etat_discret = transformation_etat(state,teamid,player)
+        etat = PlayerDecorator(state,teamid,player)
+        action = [goal(etat),attaquant(etat),evite(etat)]
+        #gestion de l'enregistrement des actions dans le fichier action
+        a = sys.stdout
+        sys.stdout =open('action','a')
+        if etat_discret not in self.dico:
             self.dico[etat_discret] = defaultdict(float)
-       res =  best_act(self.dico,etat_discret,action)
-       print(res.name)
-       sys.stdout.close()
-       sys.stdout=a
-       return res
+            enregistre_dico(self.dico)
+        res =  best_act(self.dico,etat_discret,action)
+        print(res.name)
+        sys.stdout.close()
+        sys.stdout=a
+        return res
+                
 
 gardien = StratStateless(goal)
 fonceStrat= StratStateless(fonceur)

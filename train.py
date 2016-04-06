@@ -8,12 +8,9 @@ from PlayerDecorator import *
 from tools import *
 from zone import *
 from ia import *
+import pickle
 
-try:
-    IA
-except NameError:
-    IA = Monte_Carlo_Strat()
-
+IA = Monte_Carlo_Strat()
 joueurIA = Player("JoueurIA",IA)
 joueur6 = Player("Joueur 6", j_solo)
 
@@ -28,7 +25,13 @@ if os.path.getsize("action") != 0:
     for i in range(0,10):
         a.write("\n goal")
     a.close()
-    Monte_Carlo("fichier","action",IA,1,0)
+    f = open('dico_apprentissage','r')
+    dicoIA = pickle.load(f)
+    f.close()
+    dicoIA = dict()
+    Monte_Carlo("fichier","action",dicoIA,1,0)
+    print("enregistre le dico")
+    enregistre_dico(dicoIA)
 
 #on supprime le fichier action apres l'apprentissage
 a = open("action","w")

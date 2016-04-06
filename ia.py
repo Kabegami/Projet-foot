@@ -7,6 +7,7 @@ from projet import *
 from PlayerDecorator import *
 from decisiontree import *
 import os
+import pickle
 from random import *
 
 def distance(distance):
@@ -82,9 +83,12 @@ def apprend_Monte_Carlo(dico, scenario, it, ip):
         dico[etat][action]=dico[etat][action] + alpha*(R-dico[etat][action])
 
 
-def Monte_Carlo(fEtat,fAction, joueurIA,it,ip):
+def Monte_Carlo(fEtat,fAction,it,ip):
     scenario = creation_scenario(fEtat,fAction,it,ip)
-    apprend_Monte_Carlo(joueurIA.dico,scenario,it, ip)
+    f = open('dico_apprentissage','r')
+    dico = pickle.load(f)
+    f.close()
+    apprend_Monte_Carlo(dico,scenario,it, ip)
     
 
 class LogStrategy(KeyboardStrategy):
@@ -124,12 +128,21 @@ def creation_scenario(etats, action, it, ip):
 #Fonctions relatives a l'utilisation de notre IA
 #---------------------------------------------------------------
 
-def enregistre_dico(IA):
-    temp = sys.stdout
-    sys.stdout = open("dico_apprentissage","w")
-    print(IA.dico)
-    sys.stdout.close()
-    sys.stdout = temp
+def enregistre_dico(dico):
+    f = open('dico_apprentissage','w')
+    pickle.dump(dico,f)
+    f.close()
+
+#fonction qui prend un dictionnaire stoquer dans un fichier et l'affecte a une variable
+#pb pour ouvre_dico car on ferme la fonction avant le retour
+def ouvre_dico():
+    #si le fichier est vide on renvoi un dico vide
+    if os.path.getsize('dico_apprentissage') == 0:
+        return dict()
+    f = open('dico_apprentissage','r')
+    dico = pickle.load(f)
+    f.close()
+    return dico
 
 def init_IA(IA):
     try:
@@ -137,14 +150,14 @@ def init_IA(IA):
     except NameError:
         IA = Monte_Carlo_Strat()
     
-def joue_IA(IA, teamIA, teamAdv,it, ip):
+def joue_IA(teamIA, teamAdv,it, ip, dico):
     #si le fichier d'action n'est pas vide on apprend
     if os.path.getsize("action") != 0:
         a = open("action","a")
         for i in range(0,10):
             a.write("\n goal")
         a.close()
-        Monte_Carlo("fichier","action",IA,it,ip)
+        Monte_Carlo("fichier","action",dico,it,ip)
         #on supprime les anciennes actions
         a = open("action","w")
         a.close()
@@ -154,16 +167,16 @@ def joue_IA(IA, teamIA, teamAdv,it, ip):
     match.play()
     match.save("fichier")
     #A la fin on enregistre le dico optenu
-    enregistre_dico(IA)
+    enregistre_dico(dicoIA)
 
-def affiche_joue_IA(IA, teamIA, teamAdv,it, ip):
+def affiche_joue_IA(teamIA, teamAdv,it, ip,dico):
     #si le fichier d'action n'est pas vide on apprend
     if os.path.getsize("action") != 0:
         a = open("action","a")
         for i in range(0,10):
             a.write("\n goal")
         a.close()
-        Monte_Carlo("fichier","action",IA,it,ip)
+        Monte_Carlo("fichier","action",dico,it,ip)
         #on supprime les anciennes actions
         a = open("action","w")
         a.close()
@@ -174,13 +187,13 @@ def affiche_joue_IA(IA, teamIA, teamAdv,it, ip):
     soccersimulator.show(match)
     match.save("fichier")
     #A la fin on enregistre le dico optenu
-    enregistre_dico(IA)
+    enregistre_dico(dicoIA)
 
 #lance n fois un tournoi avec la liste des joueurs
-def tournoi_IA(IA, TeamIA, Liste,it,ip,n):
+def tournoi_IA(dico,TeamIA, Liste,it,ip,n):
     for j in range(0,n+1):
         for i in Liste:
-            joue_IA(IA,TeamIA,i,it,ip)
+            joue_IA(TeamIA,i,dico,it,ip)
     
 
 def init_fichier(team1 ,team2):
