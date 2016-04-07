@@ -83,11 +83,9 @@ def apprend_Monte_Carlo(dico, scenario, it, ip):
         dico[etat][action]=dico[etat][action] + alpha*(R-dico[etat][action])
 
 
-def Monte_Carlo(fEtat,fAction,it,ip):
+def Monte_Carlo(fEtat,fAction,it,ip,dico):
     scenario = creation_scenario(fEtat,fAction,it,ip)
-    dico = ouvre_dico()
     apprend_Monte_Carlo(dico,scenario,it, ip)
-    enregistre_dico(dico)
     
 
 class LogStrategy(KeyboardStrategy):
@@ -150,14 +148,14 @@ def init_IA(IA):
     except NameError:
         IA = Monte_Carlo_Strat()
     
-def joue_IA(teamIA, teamAdv,it, ip,):
+def joue_IA(IA,teamIA, teamAdv,it, ip,):
     #si le fichier d'action n'est pas vide on apprend
     if os.path.getsize("action") != 0:
         a = open("action","a")
-        for i in range(0,10):
+        for i in range(0,30):
             a.write("\n goal")
         a.close()
-        Monte_Carlo("fichier","action",it,ip)
+        Monte_Carlo("fichier","action",it,ip,IA.dico)
         #on supprime les anciennes actions
         a = open("action","w")
         a.close()
@@ -169,14 +167,14 @@ def joue_IA(teamIA, teamAdv,it, ip,):
     match.save("fichier")
     #A la fin on enregistre le dico optenu
 
-def affiche_joue_IA(teamIA, teamAdv,it, ip):
+def affiche_joue_IA(IA,teamIA, teamAdv,it, ip):
     #si le fichier d'action n'est pas vide on apprend
     if os.path.getsize("action") != 0:
         a = open("action","a")
-        for i in range(0,10):
+        for i in range(0,30):
             a.write("\n goal")
         a.close()
-        Monte_Carlo("fichier","action",it,ip)
+        Monte_Carlo("fichier","action",it,ip,IA.dico)
         #on supprime les anciennes actions
         a = open("action","w")
         a.close()
@@ -189,10 +187,10 @@ def affiche_joue_IA(teamIA, teamAdv,it, ip):
     #A la fin on enregistre le dico optenu
 
 #lance n fois un tournoi avec la liste des joueurs
-def tournoi_IA(TeamIA, Liste,it,ip,n):
+def tournoi_IA(IA,TeamIA, Liste,it,ip,n):
     for j in range(0,n+1):
         for i in Liste:
-            joue_IA(TeamIA,i,it,ip)
+            joue_IA(IA,TeamIA,i,it,ip)
     
 
 def init_fichier(team1 ,team2):

@@ -57,7 +57,7 @@ class Monte_Carlo_Strat(BaseStrategy):
     def compute_strategy(self,state,teamid,player):
         etat_discret = transformation_etat(state,teamid,player)
         etat = PlayerDecorator(state,teamid,player)
-        action = [goal(etat),attaquant(etat),evite(etat)]
+        action = [fonce_Strat(etat), tire_hautStrat(etat), tire_basStrat(etat),viseStrat(etat),attend(etat),dribleStrat(etat)]
         #gestion de l'enregistrement des actions dans le fichier action
         a = sys.stdout
         sys.stdout =open('action','a')

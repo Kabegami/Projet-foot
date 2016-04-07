@@ -36,6 +36,7 @@ Liste.append(team4)
 Liste.append(team5)
 
 if __name__ == "__main__":
-    #init_fichier(team1,team2)
-    tournoi_IA(teamIA,Liste,1,0,5)
-    affiche_joue_IA(teamIA,team5,1,0)
+    init_fichier(team1,team2)
+    tournoi_IA(IA,teamIA,Liste,1,0,5)
+    affiche_joue_IA(IA,teamIA,team2,1,0)
+    enregistre_dico(IA.dico)

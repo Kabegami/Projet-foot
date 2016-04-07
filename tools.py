@@ -94,6 +94,42 @@ def attaquant2(etat):
         sys.stdout.close()
         sys.stdout=a
         return res
+
 #-------------------------------------------------------
 #Strat IA
 #-------------------------------------------------------
+
+def fonce_Strat(etat):
+    res = etat.shoot_but + etat.go_ball
+    res.name = "fonce_Strat"
+    return res
+    
+def tire_hautStrat(etat):
+    res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=10))
+    res.name = "tire_hautStrat"
+    return res
+
+def tire_basStrat(etat):
+    res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=10))
+    res.name = "tire_basStrat"
+    return res
+
+def viseStrat(etat):
+    res =  etat.vise_but
+    res.name = "viseStrat"
+    return res
+
+def passeStrat(etat):
+    res =  etat.vise(etat.equ_proche)
+    res.name = "passeStrat"
+    return res
+
+def attend(etat):
+    res = SoccerAction(Vector2D(0,0),Vector2D(0,0))
+    res.name = "attend"
+    return res
+
+def dribleStrat(etat):
+    res =  etat.drible_but + etat.go_ball
+    res.name = "dribleStrat"
+    return res
