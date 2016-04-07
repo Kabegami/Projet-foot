@@ -28,8 +28,7 @@ if os.path.getsize("action") != 0:
     f = open('dico_apprentissage','r')
     dicoIA = pickle.load(f)
     f.close()
-    dicoIA = dict()
-    Monte_Carlo("fichier","action",dicoIA,1,0)
+    Monte_Carlo("fichier","action",1,0)
     print("enregistre le dico")
     enregistre_dico(dicoIA)
 

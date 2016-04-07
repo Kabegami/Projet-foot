@@ -9,7 +9,6 @@ from tools import *
 from zone import *
 from ia import *
 
-dicoIA = ouvre_dico("dico_apprentissage")
 IA = Monte_Carlo_Strat()
 
 joueurIA = Player("JoueurIA",IA)
@@ -27,14 +26,16 @@ team1 = SoccerTeam("soloT",[joueur6])
 team2 = SoccerTeam("goalT",[joueur2])
 team3 = SoccerTeam("attaqueT",[joueur4])
 team4 = SoccerTeam("dogeT",[joueur8])
+team5 = SoccerTeam("fonceT",[joueur1])
 
 Liste = []
 Liste.append(team1)
 Liste.append(team2)
 Liste.append(team3)
 Liste.append(team4)
+Liste.append(team5)
 
 if __name__ == "__main__":
-    init_fichier(team1,team2)
-    #tournoi_IA(IA,teamIA,Liste,1,0,5)
-    affiche_joue_IA(teamIA,team1,dicoIA,1,0)
+    #init_fichier(team1,team2)
+    tournoi_IA(teamIA,Liste,1,0,5)
+    affiche_joue_IA(teamIA,team5,1,0)

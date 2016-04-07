@@ -53,9 +53,7 @@ class Monte_Carlo_Strat(BaseStrategy):
     def __init__(self):
        BaseStrategy.__init__(self,"Monte_Carlo")
        #on initialise L'IA avec le dictionnaire stoquer dans dico_apprentissage
-       f = open('dico_apprentissage','r')
-       self.dico = pickle.load(f)
-       f.close()
+       self.dico = ouvre_dico()
     def compute_strategy(self,state,teamid,player):
         etat_discret = transformation_etat(state,teamid,player)
         etat = PlayerDecorator(state,teamid,player)
@@ -65,7 +63,7 @@ class Monte_Carlo_Strat(BaseStrategy):
         sys.stdout =open('action','a')
         if etat_discret not in self.dico:
             self.dico[etat_discret] = defaultdict(float)
-            enregistre_dico(self.dico)
+            #enregistre_dico(self.dico)
         res =  best_act(self.dico,etat_discret,action)
         print(res.name)
         sys.stdout.close()
