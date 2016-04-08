@@ -105,12 +105,12 @@ def fonce_Strat(etat):
     return res
     
 def tire_hautStrat(etat):
-    res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=10))
+    res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=2))
     res.name = "tire_hautStrat"
     return res
 
 def tire_basStrat(etat):
-    res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=10))
+    res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=2))
     res.name = "tire_basStrat"
     return res
 

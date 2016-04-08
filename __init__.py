@@ -1,5 +1,10 @@
 from projet import *
+from IA import *
 
+IA = Monte_Carlo_Strat()
+
+joueurIA = Player("JoueurIA",IA)
+#------------------------------------------------------------
 joueur1 = Player("Joueur 1", fonceStrat)
 joueur2 = Player("Joueur 2", gardien)
 joueur3 = Player("Joueur 3", MilieuStrategy())
@@ -12,4 +17,4 @@ joueur8 = Player("doge",doge)
 team1 = SoccerTeam("team2",[joueur6])
 team2 = SoccerTeam("team1",[joueur8,joueur2])
 team4 = SoccerTeam("team4",[joueur2,joueur8,joueur5,joueur8])
-teamIA = SoccerTeam("teamIA",[Player("IA",treeStrat),joueur2]
+teamIA = SoccerTeam("teamIA",[Player(joueurIA,joueur2]

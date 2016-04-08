@@ -1,0 +1,8 @@
+import soccersimulator,soccersimulator.settings
+from soccersimulator import BaseStrategy, SoccerAction
+from soccersimulator import SoccerTeam, SoccerMatch
+from soccersimulator import Vector2D, Player, SoccerTournament
+from soccersimulator import settings
+from zone import *
+from PlayerDecorator import *
+
