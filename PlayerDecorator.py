@@ -98,7 +98,7 @@ class PlayerDecorator(object):
             V = (self.ball_position - p)*1.05
             return SoccerAction((p + V) - self.my_position, Vector2D(0,0))
         else:
-            return SoccerAction(self.ball_position - self.my_position,p - self.my_position)
+            return SoccerAction(self.ball_position - self.my_position,(p - self.my_position))
 
     @property
     def vise_but(self):

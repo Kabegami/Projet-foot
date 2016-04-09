@@ -55,20 +55,35 @@ class Monte_Carlo_Strat(BaseStrategy):
        #on initialise L'IA avec le dictionnaire stoquer dans dico_apprentissage
        self.dico = ouvre_dico()
     def compute_strategy(self,state,teamid,player):
-        etat_discret = transformation_etat(state,teamid,player)
-        etat = PlayerDecorator(state,teamid,player)
-        action = [fonce_Strat(etat), tire_hautStrat(etat), tire_basStrat(etat),viseStrat(etat),attend(etat),dribleStrat(etat)]
-        #gestion de l'enregistrement des actions dans le fichier action
-        a = sys.stdout
-        sys.stdout =open('action','a')
-        if etat_discret not in self.dico:
-            self.dico[etat_discret] = defaultdict(float)
-            #enregistre_dico(self.dico)
-        res =  best_act(self.dico,etat_discret,action)
-        print(res.name)
-        sys.stdout.close()
-        sys.stdout=a
-        return res
+        if (teamid != 1):
+            miroir = MiroirState(state)
+            etat_discret = transformation_etat(miroir,teamid,player)
+            etat = PlayerDecorator(miroir,teamid,player)
+            action = [fonce_Strat(etat), tire_hautStrat(etat), tire_basStrat(etat),viseStrat(etat),attend(etat),dribleStrat(etat), intercepteStrat(etat)]
+            #action = ["fonce_Strat","tire_hautStrat","tire_basStrat","visteStrat","attend","dribleStrat"]
+            #gestion de l'enregistrement des actions dans le fichier action
+            if etat_discret not in self.dico:
+                self.dico[etat_discret] = defaultdict(float)
+            res =  best_act(self.dico,etat_discret,action)
+            f = open("action","a")
+            f.write(res.name)
+            f.write("\n")
+            f.close()
+            return MiroirSoccerAction(res)
+        else:
+            etat_discret = transformation_etat(state,teamid,player)
+            etat = PlayerDecorator(state,teamid,player)
+            action = [fonce_Strat(etat), tire_hautStrat(etat), tire_basStrat(etat),viseStrat(etat),dribleStrat(etat),goal(etat)]
+            #action = ["fonce_Strat","tire_hautStrat","tire_basStrat","visteStrat","attend","dribleStrat"]
+            #gestion de l'enregistrement des actions dans le fichier action
+            if etat_discret not in self.dico:
+                self.dico[etat_discret] = defaultdict(float)
+            res =  best_act(self.dico,etat_discret,action)
+            f = open("action","a")
+            f.write(res.name)
+            f.write("\n")
+            f.close()
+            return res
                 
 
 gardien = StratStateless(goal)
@@ -80,6 +95,7 @@ toto = StratStateless(test)
 dio = StratStateless(campe)
 doge = StratStateless(evite)
 test = StratStateless(attaquant2)
+test2 = StratStateless(dribleStrat)
 
 joueur1 = Player("Joueur 1", fonceStrat)
 joueur2 = Player("Joueur 2", gardien)

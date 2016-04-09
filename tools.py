@@ -14,7 +14,6 @@ def goal(etat):
     if (etat.distance_ball) < 20:
         res =  etat.go_ball + etat.degage(etat.my_zone)
         res.name = "goal"
-        
         return res
     else:
         res =  etat.go(etat.my_but) + SoccerAction(Vector2D(5,0),Vector2D(0,0)) + etat.shoot_but
@@ -105,12 +104,20 @@ def fonce_Strat(etat):
     return res
     
 def tire_hautStrat(etat):
-    res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=2))
+    V = Vector2D(angle = 45, norm = 2)
+    if not((etat.ball_position - etat.my_position).angle > 42 and (etat.ball_position - etat.my_position).angle < 48):
+        res =  etat.go(etat.ball_position - 0.1 *V)
+    else:
+        res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=2))
     res.name = "tire_hautStrat"
     return res
 
 def tire_basStrat(etat):
-    res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=45, norm=2))
+    V = Vector2D(angle = -45, norm = 2)
+    if not((etat.ball_position - etat.my_position).angle < -42 and (etat.ball_position - etat.my_position).angle > -48):
+        res =  etat.go(etat.ball_position - 0.1 *V)
+    else:
+        res =  SoccerAction(etat.ball_position - etat.my_position,Vector2D(angle=-45, norm=2))
     res.name = "tire_basStrat"
     return res
 
@@ -130,6 +137,16 @@ def attend(etat):
     return res
 
 def dribleStrat(etat):
-    res =  etat.drible_but + etat.go_ball
+    V = (etat.ball_position - etat.adv_but)*1.05
+    if not(etat.dans_zone(zone(etat.adv_but + V - Vector2D(5,5), etat.adv_but + V + Vector2D(5,5)),etat.my_position)):
+        res =  SoccerAction((etat.adv_but + V) - etat.my_position, Vector2D(0,0))
+    else:
+        res = SoccerAction(etat.ball_position - etat.my_position,0.030*(etat.adv_but - etat.my_position))
     res.name = "dribleStrat"
+    return res
+
+def intercepteStrat(etat):
+    V = etat.adv_proche - etat.my_but
+    res = etat.go(etat.adv_proche + 0.5*V)
+    res.name = "intercepteStrat"
     return res

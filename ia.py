@@ -56,13 +56,15 @@ from collections import defaultdict
 #retourne la meilleurs action locale
 def best_act(dico,state,act):
     #Attention un dictionnaire NE PEUT PAS CONTENIR DES LISTE donc pb pour action essayer avec des tuples
-    maxi = 0
+    maxi = -10000
+    best_act = act[0]
     for action in act:
-        if action not in dico[state]:
-            dico[state][action] = random()*9 + 1
-        if dico[state][action] > maxi:
-            maxi = dico[state][action]
-            best_act = action 
+        #print("action :",action)
+        if action.name not in dico[state]:
+            dico[state][action.name] = random()*9 + 1
+        if dico[state][action.name] > maxi:
+            maxi = dico[state][action.name]
+            best_act = action
     return best_act
 
 #Pour la strategie de l ia, on prend le chemin avec la meilleur esperance d action
@@ -72,8 +74,7 @@ def apprend_Monte_Carlo(dico, scenario, it, ip):
     gamma=1
     R=0
     alpha=0.5
-    #print("apprend Monte Carlo",type(dico))
-    #on parcours les etat en partant par les etats finales
+    #on parcours les etat en partant par les etats finaux
     for (etat,action,state) in scenario[::-1]:
         R=gamma*R + recompense(state,it,ip)
         #si on n a pas encore croise cette situation, on initialise Q
@@ -84,9 +85,10 @@ def apprend_Monte_Carlo(dico, scenario, it, ip):
 
 
 def Monte_Carlo(fEtat,fAction,it,ip,dico):
+    #print("dico avant monte Carlo",dico)
     scenario = creation_scenario(fEtat,fAction,it,ip)
     apprend_Monte_Carlo(dico,scenario,it, ip)
-    
+    #print(dico)
 
 class LogStrategy(KeyboardStrategy):
     def __init__(self):
@@ -115,10 +117,11 @@ def creation_scenario(etats, action, it, ip):
     scenario = []
     for etat_j in m.states:
         #pb nombre d'etat variable celon les match
-        tuple = (transformation_etat(etat_j,it,ip), liste[i],etat_j)
-        scenario.append(tuple)
-        #print("i : ",i)
-        i = i + 1
+        if (i < len(liste)):
+            tuple = (transformation_etat(etat_j,it,ip), liste[i],etat_j)
+            scenario.append(tuple)
+            i = i + 1
+    #print("scenario : \n",scenario)
     return scenario
 
 #---------------------------------------------------------------
@@ -151,52 +154,47 @@ def init_IA(IA):
 def joue_IA(IA,teamIA, teamAdv,it, ip,):
     #si le fichier d'action n'est pas vide on apprend
     if os.path.getsize("action") != 0:
-        a = open("action","a")
-        for i in range(0,30):
-            a.write("\n goal")
-        a.close()
-        Monte_Carlo("fichier","action",it,ip,IA.dico)
+        Monte_Carlo("Match","action",it,ip,IA.dico)
         #on supprime les anciennes actions
         a = open("action","w")
         a.close()
     match = SoccerMatch(teamIA, teamAdv)
     #on reinitisalise fichier
-    a = open("fichier","w")
+    a = open("Match","w")
     a.close()
     match.play()
-    match.save("fichier")
+    match.save("Match")
     #A la fin on enregistre le dico optenu
 
 def affiche_joue_IA(IA,teamIA, teamAdv,it, ip):
     #si le fichier d'action n'est pas vide on apprend
     if os.path.getsize("action") != 0:
-        a = open("action","a")
-        for i in range(0,30):
-            a.write("\n goal")
-        a.close()
-        Monte_Carlo("fichier","action",it,ip,IA.dico)
+        Monte_Carlo("Match","action",it,ip,IA.dico)
         #on supprime les anciennes actions
         a = open("action","w")
         a.close()
     match = SoccerMatch(teamIA, teamAdv)
-    a = open("fichier","w")
+    a = open("Match","w")
     a.close()
     match.play()
     soccersimulator.show(match)
-    match.save("fichier")
+    match.save("Match")
     #A la fin on enregistre le dico optenu
 
 #lance n fois un tournoi avec la liste des joueurs
-def tournoi_IA(IA,TeamIA, Liste,it,ip,n):
+def tournoi_IA(IA,TeamIA, Liste,it,ip,n,affiche):
     for j in range(0,n+1):
         for i in Liste:
-            joue_IA(IA,TeamIA,i,it,ip)
+            if not(affiche):
+                joue_IA(IA,TeamIA,i,it,ip)
+            else:
+                affiche_joue_IA(IA,TeamIA,i,it,ip)
     
 
 def init_fichier(team1 ,team2):
-    if os.path.getsize("fichier") == 0:
+    if os.path.getsize("Match") == 0:
         match = SoccerMatch(team1,team2)
-        match.save("fichier")
+        match.save("Match")
 
 
 
