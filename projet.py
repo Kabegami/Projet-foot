@@ -59,8 +59,9 @@ class Monte_Carlo_Strat(BaseStrategy):
             miroir = MiroirState(state)
             etat_discret = transformation_etat(miroir,teamid,player)
             etat = PlayerDecorator(miroir,teamid,player)
-            action = [fonce_Strat(etat), tire_hautStrat(etat), tire_basStrat(etat),viseStrat(etat),attend(etat),dribleStrat(etat), intercepteStrat(etat)]
-            #action = ["fonce_Strat","tire_hautStrat","tire_basStrat","visteStrat","attend","dribleStrat"]
+            #action = [fonce_Strat(etat), tire_hautStrat(etat), tire_basStrat(etat),viseStrat(etat),attend(etat),dribleStrat(etat), intercepteStrat(etat)]
+            action = [fonce_Strat(etat),goal(etat),attaquant(etat),evite(etat)]
+            
             #gestion de l'enregistrement des actions dans le fichier action
             if etat_discret not in self.dico:
                 self.dico[etat_discret] = defaultdict(float)
@@ -73,8 +74,8 @@ class Monte_Carlo_Strat(BaseStrategy):
         else:
             etat_discret = transformation_etat(state,teamid,player)
             etat = PlayerDecorator(state,teamid,player)
-            action = [fonce_Strat(etat), tire_hautStrat(etat), tire_basStrat(etat),viseStrat(etat),dribleStrat(etat),goal(etat)]
-            #action = ["fonce_Strat","tire_hautStrat","tire_basStrat","visteStrat","attend","dribleStrat"]
+            #action = [fonce_Strat(etat), tire_hautStrat(etat), tire_basStrat(etat),viseStrat(etat),dribleStrat(etat),goal(etat)]
+            action = [fonce_Strat(etat),goal(etat),attaquant(etat),evite(etat)]
             #gestion de l'enregistrement des actions dans le fichier action
             if etat_discret not in self.dico:
                 self.dico[etat_discret] = defaultdict(float)
