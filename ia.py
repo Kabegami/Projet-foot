@@ -73,7 +73,7 @@ def best_act(dico,state,act):
 def apprend_Monte_Carlo(dico, scenario, it, ip):
     gamma=1
     R=0
-    alpha=0.5
+    alpha=0.2
     #on parcours les etat en partant par les etats finaux
     for (etat,action,state) in scenario[::-1]:
         R=gamma*R + recompense(state,it,ip)
