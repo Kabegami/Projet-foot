@@ -37,10 +37,30 @@ class StratStateless(BaseStrategy):
     def compute_strategy(self,state,idt,idp):
         if(idt != 1):
             miroir = MiroirState(state)
-            #return self.decideur(PlayerDecorator(miroir,idt,idp))
             return MiroirSoccerAction(self.decideur(PlayerDecorator(miroir,idt,idp)))
         else:
-            return self.decideur(PlayerDecorator(state,idt,idp)) 
+            return self.decideur(PlayerDecorator(state,idt,idp))
+
+class ExempleStrat(BaseStrategy):
+    def __init__(self,decideur):
+        BaseStrategy.__init__(self,decideur.__name__)
+        self.decideur = decideur
+    def compute_strategy(self,state,idt,idp):
+        if(idt != 1):
+            miroir = MiroirState(state)
+            res =  MiroirSoccerAction(self.decideur(PlayerDecorator(miroir,idt,idp)))
+            f = open("action","a")
+            f.write(res.name)
+            f.write("\n")
+            f.close()
+            return res
+        else:
+            res =  self.decideur(PlayerDecorator(state,idt,idp))
+            f = open("action","a")
+            f.write(res.name)
+            f.write("\n")
+            f.close()
+            return res            
 
 class GoalStrategy(BaseStrategy):
     def __init__(self):

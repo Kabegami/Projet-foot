@@ -129,7 +129,7 @@ def creation_scenario(etats, action, it, ip):
 #---------------------------------------------------------------
 
 def enregistre_dico(dico):
-    f = open('dico_apprentissage','w')
+    f = open('dico_apprentissage_exemple','w')
     pickle.dump(dico,f)
     f.close()
 
@@ -137,10 +137,10 @@ def enregistre_dico(dico):
 #pb pour ouvre_dico car on ferme la fonction avant le retour
 def ouvre_dico():
     #si le fichier est vide on renvoi un dico vide
-    if os.path.getsize("dico_apprentissage") == 0:
+    if os.path.getsize("dico_apprentissage_exemple") == 0:
         dico = dict()
     else:
-        f = open('dico_apprentissage','r')
+        f = open('dico_apprentissage_exemple','r')
         dico = pickle.load(f)
         f.close()
     return dico
@@ -149,7 +149,7 @@ def init_IA(IA):
     try:
         IA
     except NameError:
-        IA = Monte_Carlo_Strat()
+        IA = Monte_Carlo_Strat()    
     
 def joue_IA(IA,teamIA, teamAdv,it, ip,):
     #si le fichier d'action n'est pas vide on apprend
@@ -196,6 +196,25 @@ def init_fichier(team1 ,team2):
         match = SoccerMatch(team1,team2)
         match.save("Match")
 
+#Fonction pour enseigner a l'IA avec des exemples
+#--------------------------------------------------
+        
+def exempleIA(IA,team1, team2, it, ip):
+    match = SoccerMatch(team1,team2)
+    #on reinitisalise fichier
+    a = open("Match","w")
+    a.close()
+    match.play()
+    match.save("Match")
+    Monte_Carlo("Match","action",it,ip,IA.dico)
+    a = open("action","w")
+    a.close()
 
+#Fait jouer tous les jouerus de la liste1 contre les joueurs de la liste2
+def exemple_tournoi(IA,L1,L2,it,ip,n):
+    for i in range(0,n+1):
+        for j in L1:
+            for k in L2:
+                exempleIA(IA,j,k,it,ip)
 
     

@@ -28,6 +28,27 @@ team3 = SoccerTeam("attaqueT",[joueur4])
 team4 = SoccerTeam("dogeT",[joueur8])
 team5 = SoccerTeam("fonceT",[joueur1])
 
+#Joueur pour les exemples
+#--------------------------------------------------
+
+p1 = ExempleStrat(fonce_Strat)
+p2 = ExempleStrat(goal)
+p3 = ExempleStrat(attaquant)
+p4 = ExempleStrat(evite)
+
+j1 = Player("FonceJ",p1)
+j2 = Player("GoalJ",p2)
+j3 = Player("AttaqueJ",p3)
+j4 = Player("EviteJ",p4)
+
+t1 = SoccerTeam("FonceT",[j1])
+t2 = SoccerTeam("GoalT",[j2])
+t3 = SoccerTeam("AttaqueT",[j3])
+t4 = SoccerTeam("EviteT",[j4])
+
+L1 = [t1,t2,t3,t4]
+L2 = [t4,t3,t2,t1]
+
 Liste = []
 Liste.append(team1)
 Liste.append(team2)
@@ -37,6 +58,10 @@ Liste.append(team5)
 
 if __name__ == "__main__":
     init_fichier(team1,team2)
+    exemple_tournoi(IA,L1,Liste,1,0,1)
     #tournoi_IA(IA,teamIA,Liste,1,0,20,False)
-    affiche_joue_IA(IA,teamIA,team5,1,0)
+    #affiche_joue_IA(IA,teamIA,team5,1,0)
+    M = SoccerMatch(teamIA, team1)
+    M.play()
+    soccersimulator.show(M)
     enregistre_dico(IA.dico)
