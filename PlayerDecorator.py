@@ -36,6 +36,10 @@ class PlayerDecorator(object):
         return (self.my_position.distance(self.ball_position))
 
     @property
+    def distance_ball_adv(self):
+        return (self.adv_proche.distance(self.ball_position))
+
+    @property
     def distance_but_adv(self):
         return self.my_position.distance(self.adv_but)
 
@@ -290,6 +294,14 @@ class PlayerDecorator(object):
     @property
     def zone_joueur(self):
         return zone(self.my_position - Vector2D(10,10),self.my_position + Vector2D(10,10))
+
+    def intercepte(self,vecteur):
+        return self.go(self.ball_postion + vecteyr.norm_max(20))
+    
+    @property
+    def intercepte_adv_proche(self):
+        V = self.my_but - self.ball_position
+        return self.go(self.ball_position + V.norm_max(20))
 
 
     #TME SOLO

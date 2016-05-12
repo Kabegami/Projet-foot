@@ -94,6 +94,12 @@ def attaquant2(etat):
         sys.stdout=a
         return res
 
+def intercepte(etat):
+    if not(etat.distance_ball  < etat.distance_ball_adv):
+        return etat.intercepte_adv_proche
+    else:
+        return fonceur(etat)
+
 #-------------------------------------------------------
 #Strat IA
 #-------------------------------------------------------

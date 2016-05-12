@@ -117,6 +117,7 @@ dio = StratStateless(campe)
 doge = StratStateless(evite)
 test = StratStateless(attaquant2)
 test2 = StratStateless(dribleStrat)
+inter = StratStateless(intercepte)
 
 joueur1 = Player("Joueur 1", fonceStrat)
 joueur2 = Player("Joueur 2", gardien)

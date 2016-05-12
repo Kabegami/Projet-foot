@@ -151,7 +151,7 @@ def init_IA(IA):
     except NameError:
         IA = Monte_Carlo_Strat()    
     
-def joue_IA(IA,teamIA, teamAdv,it, ip,):
+def joue_IA(IA,teamIA, teamAdv,it, ip):
     #si le fichier d'action n'est pas vide on apprend
     if os.path.getsize("action") != 0:
         Monte_Carlo("Match","action",it,ip,IA.dico)
