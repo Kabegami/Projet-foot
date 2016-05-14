@@ -70,10 +70,10 @@ class GoalStrategy(BaseStrategy):
         return goal(etat)
 
 class Monte_Carlo_Strat(BaseStrategy):
-    def __init__(self):
+    def __init__(self,fichier):
        BaseStrategy.__init__(self,"Monte_Carlo")
        #on initialise L'IA avec le dictionnaire stoquer dans dico_apprentissage
-       self.dico = ouvre_dico()
+       self.dico = ouvre_dico(fichier)
     def compute_strategy(self,state,teamid,player):
         if (teamid != 1):
             miroir = MiroirState(state)
@@ -105,6 +105,8 @@ class Monte_Carlo_Strat(BaseStrategy):
             f.write("\n")
             f.close()
             return res
+
+
                 
 
 gardien = StratStateless(goal)
@@ -117,7 +119,6 @@ dio = StratStateless(campe)
 doge = StratStateless(evite)
 test = StratStateless(attaquant2)
 test2 = StratStateless(dribleStrat)
-inter = StratStateless(intercepte)
 
 joueur1 = Player("Joueur 1", fonceStrat)
 joueur2 = Player("Joueur 2", gardien)

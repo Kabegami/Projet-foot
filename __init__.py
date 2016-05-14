@@ -1,7 +1,7 @@
 from projet import *
 from IA import *
 
-IA = Monte_Carlo_Strat()
+IA = Monte_Carlo_Strat("dico_apprentissage")
 
 joueurIA = Player("JoueurIA",IA)
 #------------------------------------------------------------
@@ -17,4 +17,4 @@ joueur8 = Player("doge",doge)
 team1 = SoccerTeam("team2",[joueur6])
 team2 = SoccerTeam("team1",[joueur8,joueur2])
 team4 = SoccerTeam("team4",[joueur2,joueur8,joueur5,joueur8])
-teamIA = SoccerTeam("teamIA",[Player(joueurIA,joueur2]
+teamIA = SoccerTeam("teamIA",[joueurIA,joueur2])

@@ -53,6 +53,10 @@ class PlayerDecorator(object):
     @property
     def angle_adv_proche(self):
         return self.angle(self.adv_proche)
+
+    @property
+    def angle_equ_proche(self):
+        return self.angle(self.equ_proche)
     @property
     def adv_proche(self):
         distance = 10000

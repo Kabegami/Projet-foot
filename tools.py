@@ -96,9 +96,11 @@ def attaquant2(etat):
 
 def intercepte(etat):
     if not(etat.distance_ball  < etat.distance_ball_adv):
-        return etat.intercepte_adv_proche
+        res = etat.intercepte_adv_proche
+        res.name = "intercepte"
+        return res
     else:
-        return fonceur(etat)
+        return fonce_Strat(etat)
 
 #-------------------------------------------------------
 #Strat IA

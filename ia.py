@@ -32,7 +32,7 @@ def angle(angle):
 
 def transformation_etat(state, idteam,player):
     etat = PlayerDecorator(state,idteam,player)
-    etat_discret = (distance(etat.distance_ball),distance(etat.distance_but_adv),distance(etat.distance_my_but),distance(etat.adv_proche_distance),angle(etat.angle_adv_proche))
+    etat_discret = (distance(etat.distance_ball),distance(etat.distance_but_adv),distance(etat.distance_my_but),distance(etat.adv_proche_distance),distance(etat.adv_proche.distance(etat.ball_position)),angle(etat.angle_adv_proche),angle(etat.angle_equ_proche))
     #print("type etat discret",type(etat_discret))
     return etat_discret
 
@@ -128,19 +128,19 @@ def creation_scenario(etats, action, it, ip):
 #Fonctions relatives a l'utilisation de notre IA
 #---------------------------------------------------------------
 
-def enregistre_dico(dico):
-    f = open('dico_apprentissage_exemple','w')
+def enregistre_dico(dico,fichier):
+    f = open(fichier,'w')
     pickle.dump(dico,f)
     f.close()
 
 #fonction qui prend un dictionnaire stoquer dans un fichier et l'affecte a une variable
 #pb pour ouvre_dico car on ferme la fonction avant le retour
-def ouvre_dico():
+def ouvre_dico(fichier):
     #si le fichier est vide on renvoi un dico vide
-    if os.path.getsize("dico_apprentissage_exemple") == 0:
+    if os.path.getsize(fichier) == 0:
         dico = dict()
     else:
-        f = open('dico_apprentissage_exemple','r')
+        f = open(fichier,'r')
         dico = pickle.load(f)
         f.close()
     return dico
@@ -213,6 +213,7 @@ def exempleIA(IA,team1, team2, it, ip):
 #Fait jouer tous les jouerus de la liste1 contre les joueurs de la liste2
 def exemple_tournoi(IA,L1,L2,it,ip,n):
     for i in range(0,n+1):
+        print("Debut du tournoi numero : ",i)
         for j in L1:
             for k in L2:
                 exempleIA(IA,j,k,it,ip)
