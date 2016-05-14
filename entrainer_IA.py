@@ -103,7 +103,7 @@ ListeT.append(duo6)
 if __name__ == "__main__":
     init_fichier(team1,team2)
     #exemple_tournoi(IA,L1,Liste,1,0,10)
-    tournoi_IA(IA,teamIAD,ListeT,1,0,20,False)
+    tournoi_IA(IA,teamIAD,ListeT,1,0,10,False)
     #affiche_joue_IA(IA,teamIA,team5,1,0)
     M = SoccerMatch(teamIAD, duo1)
     M.play()
